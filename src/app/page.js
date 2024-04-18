@@ -1,6 +1,7 @@
 "use client";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import "./globals.css";
+// import Link from "next/link";
 
 import {
   Button,
@@ -18,6 +19,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema } from "@/Schema";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+
+//Utils
+import { getDepartments } from "@/store";
 
 const departments = [
   {
@@ -62,10 +66,11 @@ const doctors = [
 ];
 
 export default function Form() {
+  const [department, setDepartment] = useState([]);
   const defaultValues = {
     username: "",
     department: "",
-    staff: "",
+    service: "",
     doctor: "",
     date: "",
     time: "",
@@ -87,6 +92,15 @@ export default function Form() {
     console.log(data);
     reset();
   };
+
+  useEffect(() => {
+    const allDepartments = getDepartments();
+    // setDepartment(allDepartments);
+    console.log(allDepartments, "allDepartments");
+
+    // console.log(department, "department");
+  }, []);
+
   return (
     <>
       <Header />
@@ -160,21 +174,21 @@ export default function Form() {
             <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
-                  name="staff"
+                  name="service"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       fullWidth
                       select
-                      label="Who you want to see"
+                      label="Services"
                       required
-                      placeholder="Who do you want to see?"
+                      placeholder="What service do you need?"
                       value={value}
                       onChange={onChange}
                       error={Boolean(errors.staff)}
                       {...(errors.staff && {
-                        helperText: "This field is required",
+                        helperText: "Please select a service",
                       })}
                     >
                       <MenuItem>Select Staff</MenuItem>
@@ -250,14 +264,14 @@ export default function Form() {
                     <TextField
                       fullWidth
                       select
-                      label="Whom to see"
+                      label="Doctor"
                       required
-                      placeholder="Whom to see?"
+                      placeholder="Select a Doctor"
                       value={value}
                       onChange={onChange}
                       error={Boolean(errors.doctor)}
                       {...(errors.doctor && {
-                        helperText: "This field is required",
+                        helperText: "Please select a doctor",
                       })}
                     >
                       <MenuItem>Select Staff</MenuItem>
