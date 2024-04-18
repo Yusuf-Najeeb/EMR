@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema } from "@/Schema";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 const departments = [
@@ -88,6 +89,7 @@ export default function Form() {
   };
   return (
     <>
+      <Header />
       <Box
         sx={{
           width: "70%",
