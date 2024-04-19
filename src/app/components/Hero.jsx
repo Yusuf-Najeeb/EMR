@@ -17,7 +17,9 @@ const Hero = () => {
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "4rem" }}>Hello World</Typography>
+        <Typography sx={{ fontSize: "4rem", color: "#4BA856" }}>
+          Welcome to Deda Hospital
+        </Typography>
       </Box>
     </Box>
   );

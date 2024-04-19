@@ -16,30 +16,45 @@ const Header = () => {
         textAlign: "center",
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "end",
+        alignItems: "center",
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          maxWidth: "1200px",
+          width: "80%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "0 auto",
+        }}
+      >
         <Box>
-          <Box variant="img">
-            <Link class="dark-logo" href="https://dedahospital.com/newsite/">
-              <Image src={Logo} alt="Deda hospital logo" />
-            </Link>
+          <Box>
+            <Box variant="img">
+              <Link class="dark-logo" href="https://dedahospital.com/newsite/">
+                <Image
+                  src={Logo}
+                  alt="Deda hospital logo"
+                  sx={{ width: "100%" }}
+                />
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "end" }}>
-        <MenuItem>Home</MenuItem>
-        <MenuItem>About Us</MenuItem>
-        <MenuItem>Our Services</MenuItem>
-        <MenuItem>Patients & Visitors</MenuItem>
-        <MenuItem>Contact</MenuItem>
-        <MenuItem>
-          <SearchRoundedIcon />
-        </MenuItem>
-        <Button sx={{ background: "#4BA856", color: "white", py: 1, px: 2 }}>
-          Appointment
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <MenuItem>Home</MenuItem>
+          <MenuItem>About Us</MenuItem>
+          <MenuItem>Our Services</MenuItem>
+          <MenuItem>Patients & Visitors</MenuItem>
+          <MenuItem>Contact</MenuItem>
+          <MenuItem>
+            <SearchRoundedIcon />
+          </MenuItem>
+          <Button sx={{ background: "#4BA856", color: "white", py: 1, px: 2 }}>
+            Appointment
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

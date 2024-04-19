@@ -6,14 +6,15 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "rgb(0, 29, 78)",
+        background:
+          "linear-gradient(to right, rgb(57, 108, 240), rgb(75, 168, 86))",
         color: "white",
         py: 5,
         px: 3,
         textAlign: "center",
       }}
     >
-      <Typography>Copyright 2024</Typography>
+      <Typography>Copyright Deda &copy; 2024</Typography>
     </Box>
   );
 };

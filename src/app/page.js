@@ -324,7 +324,11 @@ export default function Form() {
             >
               <Button type="submit" variant="contained" disabled={isSubmitting}>
                 {isSubmitting ? (
-                  <CircularProgress size={20} color="primary" sx={{ ml: 3 }} />
+                  <CircularProgress
+                    size={20}
+                    color="secondary"
+                    sx={{ ml: 3 }}
+                  />
                 ) : (
                   "Schedule Appointment"
                 )}
