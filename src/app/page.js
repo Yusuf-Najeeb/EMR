@@ -13,15 +13,16 @@ import {
 } from "@mui/material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema } from "@/Schema";
+import { formatDateToYYYMMDDD } from "../utils/format";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 
 //Utils
-import { getAllDepartments, getAllServices } from "@/store";
+import { getAllDepartments, getAllServices, getPatients } from "@/store";
 
 const doctors = [
   {
@@ -39,13 +40,19 @@ const doctors = [
 export default function Form() {
   const [department, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
+  // const [verifyPatient, setVerifyPatient] = useState(false);
+  const [patients, setPatient] = useState([]);
+  const [date, setDate] = useState("");
+  console.log(date, "set for formatting");
+
+  const [key, setKey] = useState("");
 
   const defaultValues = {
     patientId: "",
     department: "",
     service: "",
     doctor: "",
-    date: "",
+    appointmentDate: "",
     time: "",
     message: "",
   };
@@ -62,7 +69,11 @@ export default function Form() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { appointmentDate, ...restOfData } = data;
+    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
+    const payload = { formattedDate, ...restOfData };
+
+    console.log(payload);
     reset();
   };
 
@@ -77,6 +88,31 @@ export default function Form() {
 
     fetchData();
   }, []);
+  const watchPatientId = useWatch({ control, name: "patientId" });
+
+  useEffect(() => {
+    if (key !== watchPatientId) {
+      setKey(watchPatientId);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchPatientId]);
+
+  useEffect(() => {
+    const patientData = async (key) => {
+      const data = await getPatients(key);
+
+      if (data?.patient) {
+        setPatient(...[data?.patient[0]]);
+      }
+
+      if (data?.patients) {
+        setPatient(...[data?.patients]);
+      }
+    };
+
+    patientData(key);
+  }, [key]);
 
   return (
     <>
@@ -137,8 +173,12 @@ export default function Form() {
                         helperText: "Patient Info is required",
                       })}
                     >
-                      <MenuItem value="Yes">Yes</MenuItem>
-                      <MenuItem value="No">No</MenuItem>
+                      <MenuItem>Confirm details</MenuItem>
+                      {patients.map((patient) => (
+                        <MenuItem key={patient.id} value={patient.id}>
+                          {patient.other_names}
+                        </MenuItem>
+                      ))}
                     </TextField>
                   )}
                 />
@@ -230,7 +270,7 @@ export default function Form() {
                 />
 
                 <Controller
-                  name="date"
+                  name="appointmentDate"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
@@ -243,14 +283,13 @@ export default function Form() {
                       placeholderText="2022-05-07"
                       customInput={
                         <TextField
-                          // fullWidth
                           label="Date"
                           required
                           value={value}
                           sx={{ width: "100%" }}
                           onChange={onChange}
-                          error={Boolean(errors.date)}
-                          {...(errors.date && {
+                          error={Boolean(errors.appointmentDate)}
+                          {...(errors.appointmentDate && {
                             helperText: "Date is required",
                           })}
                         />
