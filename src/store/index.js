@@ -1,4 +1,4 @@
-export const getDepartments = async () => {
+export const getAllDepartments = async () => {
   try {
     const response = await fetch(
       "https://immortal-lab-key.ngrok-free.app/public/has-appointment/departments",
@@ -11,10 +11,30 @@ export const getDepartments = async () => {
       }
     );
     const data = await response.json();
-    console.log(data.data);
 
     return data;
   } catch (err) {
-    console.log(err.stack);
+    console.log(err);
+  }
+};
+
+export const getAllServices = async (department_id) => {
+  try {
+    const response = await fetch(
+      "https://immortal-lab-key.ngrok-free.app/public/consultancy/services",
+      {
+        method: "POST",
+        body: JSON.stringify({ department_id }),
+        headers: {
+          "Content-type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+      }
+    );
+    const data = await response.json();
+
+    return data;
+  } catch (err) {
+    console.log(err);
   }
 };

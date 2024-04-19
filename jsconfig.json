@@ -3,15 +3,14 @@
     "paths": {
       "@/*": ["./src/*"]
     }
-  },
-  "module": {
-    "rules": [
-      {
-        "test": /\.(jpe?g|png)$/i,
-        "include": path.resolve(__dirname, './'),
-        "use": ['file-loader']
-      }
-    ]
   }
+  // "module": {
+  //   "rules": [
+  //     {
+  //       "test": /\.(jpe?g|png)$/i,
+  //       "include": path.resolve(__dirname, './'),
+  //       "use": ['file-loader']
+  //     }
+  //   ]
+  // }
 }
-

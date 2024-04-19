@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import "./globals.css";
-// import Link from "next/link";
 
 import {
   Button,
@@ -18,40 +17,12 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema } from "@/Schema";
 import Header from "./components/Header";
+import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 
 //Utils
-import { getDepartments } from "@/store";
+import { getAllDepartments, getAllServices } from "@/store";
 
-const departments = [
-  {
-    id: 1,
-    value: "Cardiology",
-    label: "Cardiology",
-  },
-  {
-    id: 2,
-    value: "Neurology",
-    label: "Neurology",
-  },
-  {
-    id: 3,
-    value: "Orthopedics",
-    label: "Orthopedics",
-  },
-];
-const staffs = [
-  {
-    id: 1,
-    value: "Dr. John Doe",
-    label: "Dr. John Doe",
-  },
-  {
-    id: 2,
-    value: "Dr. Jane Doe",
-    label: "Dr. Jane Doe",
-  },
-];
 const doctors = [
   {
     id: 1,
@@ -67,8 +38,10 @@ const doctors = [
 
 export default function Form() {
   const [department, setDepartment] = useState([]);
+  const [services, setServices] = useState([]);
+
   const defaultValues = {
-    username: "",
+    patientId: "",
     department: "",
     service: "",
     doctor: "",
@@ -94,40 +67,44 @@ export default function Form() {
   };
 
   useEffect(() => {
-    const allDepartments = getDepartments();
-    // setDepartment(allDepartments);
-    console.log(allDepartments, "allDepartments");
+    const fetchData = async () => {
+      const allDepartments = await getAllDepartments();
+      const allServices = await getAllServices();
 
-    // console.log(department, "department");
+      setDepartment(allDepartments);
+      setServices(allServices);
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
       <Header />
+      <Hero />
       <Box
         sx={{
-          width: "70%",
+          width: "75%",
           mx: "auto",
-          // border: "1px solid rgb(0, 24, 78)",
           borderRadius: 2,
           p: 6,
           my: 2,
           boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
         }}
       >
-        <Typography>Book Appointment</Typography>
+        <Typography variant="h5">Book Appointment</Typography>
         <Box>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
-                  name="username"
+                  name="patientId"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
                     <TextField
                       fullWidth
-                      label="username"
+                      label="Patient ID"
                       placeholder="Enter Email/Phone/User-ID"
                       value={value}
                       onChange={onChange}
@@ -140,6 +117,35 @@ export default function Form() {
                   )}
                 />
               </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <Controller
+                  name="verifyPatient"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange } }) => (
+                    <TextField
+                      fullWidth
+                      select
+                      // disabled={() => handleChange(e)}
+                      label="Patient Info"
+                      placeholder="Confirm your name"
+                      value={value}
+                      onChange={onChange}
+                      required
+                      error={Boolean(errors.verifyInfo)}
+                      {...(errors.verifyInfo && {
+                        helperText: "Patient Info is required",
+                      })}
+                    >
+                      <MenuItem value="Yes">Yes</MenuItem>
+                      <MenuItem value="No">No</MenuItem>
+                    </TextField>
+                  )}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
                   name="department"
@@ -160,18 +166,15 @@ export default function Form() {
                       })}
                     >
                       <MenuItem>Select Department</MenuItem>
-                      {departments.map((department) => (
-                        <MenuItem key={department.id} value={department.value}>
-                          {department.label}
+                      {department?.map((department) => (
+                        <MenuItem key={department?.id} value={department?.id}>
+                          {department?.name}
                         </MenuItem>
                       ))}
                     </TextField>
                   )}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
                   name="service"
@@ -192,15 +195,18 @@ export default function Form() {
                       })}
                     >
                       <MenuItem>Select Staff</MenuItem>
-                      {staffs.map((staff) => (
-                        <MenuItem key={staff.id} value={staff.value}>
-                          {staff.label}
+                      {services?.map((service) => (
+                        <MenuItem key={service?.id} value={service?.id}>
+                          {service?.name}
                         </MenuItem>
                       ))}
                     </TextField>
                   )}
                 />
               </Grid>
+            </Grid>
+
+            <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
                   name="time"
@@ -210,8 +216,8 @@ export default function Form() {
                     <TextField
                       type="time"
                       value={value}
-                      sx={{ mr: 2 }}
-                      label="Time"
+                      sx={{ mr: 3, width: "37%" }}
+                      // label="Time"
                       required
                       onChange={onChange}
                       placeholder="00:00"
@@ -237,10 +243,11 @@ export default function Form() {
                       placeholderText="2022-05-07"
                       customInput={
                         <TextField
-                          fullWidth
+                          // fullWidth
                           label="Date"
                           required
                           value={value}
+                          sx={{ width: "100%" }}
                           onChange={onChange}
                           error={Boolean(errors.date)}
                           {...(errors.date && {
@@ -252,9 +259,6 @@ export default function Form() {
                   )}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
                   name="doctor"
