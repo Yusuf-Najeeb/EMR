@@ -22,29 +22,22 @@ import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 
 //Utils
-import { getAllDepartments, getAllServices, getPatients } from "@/store";
-
-const doctors = [
-  {
-    id: 1,
-    value: "Dr. Moe Derrick",
-    label: "Dr. Moe Derrick",
-  },
-  {
-    id: 2,
-    value: "Dr. Jane Doe",
-    label: "Dr. Jane Doe",
-  },
-];
+import {
+  getAllDepartments,
+  getAllServices,
+  getPatients,
+  getAvailableDoctors,
+} from "@/store";
 
 export default function Form() {
   const [department, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   // const [verifyPatient, setVerifyPatient] = useState(false);
   const [patients, setPatient] = useState([]);
   const [date, setDate] = useState("");
-  console.log(date, "set for formatting");
-
+  const [time, setTime] = useState("");
+  const [departmentId, setDepartmentId] = useState("");
   const [key, setKey] = useState("");
 
   const defaultValues = {
@@ -68,13 +61,35 @@ export default function Form() {
     resolver: yupResolver(appointmentBookingSchema),
   });
 
-  const onSubmit = (data) => {
-    const { appointmentDate, ...restOfData } = data;
-    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
-    const payload = { formattedDate, ...restOfData };
+  const getTime = useWatch({ control, name: "time" });
+  const getDate = useWatch({ control, name: "appointmentDate" });
+  const formatDate = formatDateToYYYMMDDD(getDate);
+  const getDepartment = useWatch({ control, name: "department" });
 
-    console.log(payload);
-    reset();
+  useEffect(() => {
+    setTime(getTime);
+    setDepartmentId(getDepartment);
+    setDate(formatDate);
+  }, [formatDate, getTime, getDepartment]);
+
+  const handleData = (data) => {
+    const { appointmentDate, time, department, ...restOfData } = data;
+    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
+
+    const payload = {
+      date: formattedDate,
+      time,
+      departmentId: department,
+      ...restOfData,
+    };
+    if (payload) {
+      onSubmit(payload);
+    }
+  };
+
+  const onSubmit = (data) => {
+    console.log(data, "Payload received successfully");
+    // reset();
   };
 
   useEffect(() => {
@@ -88,6 +103,7 @@ export default function Form() {
 
     fetchData();
   }, []);
+
   const watchPatientId = useWatch({ control, name: "patientId" });
 
   useEffect(() => {
@@ -114,6 +130,21 @@ export default function Form() {
     patientData(key);
   }, [key]);
 
+  useEffect(() => {
+    const getDoctor = async (departmentId, time, date) => {
+      const availableDoctors = await getAvailableDoctors(
+        departmentId,
+        time,
+        date
+      );
+      setDoctors(...[availableDoctors?.availableDoctors[0]]);
+    };
+
+    if (date && time && departmentId) {
+      getDoctor(departmentId, time, date);
+    }
+  }, [date, time, departmentId]);
+
   return (
     <>
       <Header />
@@ -130,7 +161,7 @@ export default function Form() {
       >
         <Typography variant="h5">Book Appointment</Typography>
         <Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleData)}>
             <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
@@ -318,7 +349,7 @@ export default function Form() {
                       })}
                     >
                       <MenuItem>Select Staff</MenuItem>
-                      {doctors.map((doctor) => (
+                      {doctors?.map((doctor) => (
                         <MenuItem key={doctor.id} value={doctor.value}>
                           {doctor.label}
                         </MenuItem>

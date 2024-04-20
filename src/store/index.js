@@ -58,3 +58,24 @@ export const getPatients = async (key) => {
     console.log(err);
   }
 };
+
+export const getAvailableDoctors = async (department_id, time, date) => {
+  try {
+    const response = await fetch(
+      "https://immortal-lab-key.ngrok-free.app/public/check-availability",
+      {
+        method: "POST",
+        body: JSON.stringify({ date, time, department_id }),
+        headers: {
+          "Content-type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+      }
+    );
+    const data = await response.json();
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
