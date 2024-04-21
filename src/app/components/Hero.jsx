@@ -17,8 +17,16 @@ const Hero = () => {
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "4rem", color: "#4BA856" }}>
-          Welcome to Deda Hospital
+        <Typography
+          sx={{
+            fontSize: { xs: "2rem", md: "3.4rem" },
+            color: "#4BA856",
+            textAlign: { xs: "center", md: "left" },
+            p: 2,
+            textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          }}
+        >
+          Book a Private Session With Our Dedicated Expert
         </Typography>
       </Box>
     </Box>

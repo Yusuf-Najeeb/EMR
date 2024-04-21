@@ -42,7 +42,9 @@ const Header = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "end" }}>
+        <Box
+          sx={{ display: { xs: "none", md: "flex" }, justifyContent: "end" }}
+        >
           <MenuItem>Home</MenuItem>
           <MenuItem>About Us</MenuItem>
           <MenuItem>Our Services</MenuItem>
