@@ -21,30 +21,36 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 
+// const doctors = [
+//   { id: 1, value: "Dr. Abel Yisa", label: "Dr. Abel Yisa" },
+//   { id: 1, value: "Dr. Hanu Amman", label: "Dr. Hanu Amman" },
+// ];
+
 //Utils
 import {
   getAllDepartments,
   getAllServices,
   getPatients,
   getAvailableDoctors,
+  bookAppointment,
 } from "@/store";
 
 export default function Form() {
-  const [department, setDepartment] = useState([]);
+  const [departments, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
   // const [verifyPatient, setVerifyPatient] = useState(false);
   const [patients, setPatient] = useState([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [departmentId, setDepartmentId] = useState("");
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
   const [key, setKey] = useState("");
 
   const defaultValues = {
     patientId: "",
-    department: "",
-    service: "",
-    doctor: "",
+    departmentId: "",
+    serviceId: "",
+    doctorId: "",
     appointmentDate: "",
     time: "",
     message: "",
@@ -64,22 +70,22 @@ export default function Form() {
   const getTime = useWatch({ control, name: "time" });
   const getDate = useWatch({ control, name: "appointmentDate" });
   const formatDate = formatDateToYYYMMDDD(getDate);
-  const getDepartment = useWatch({ control, name: "department" });
+  const getDepartment = useWatch({ control, name: "departmentId" });
 
   useEffect(() => {
     setTime(getTime);
-    setDepartmentId(getDepartment);
+    setSelectedDepartmentId(getDepartment);
     setDate(formatDate);
   }, [formatDate, getTime, getDepartment]);
 
   const handleData = (data) => {
-    const { appointmentDate, time, department, ...restOfData } = data;
+    const { appointmentDate, time, departmentId, ...restOfData } = data;
     const formattedDate = formatDateToYYYMMDDD(appointmentDate);
 
     const payload = {
       date: formattedDate,
       time,
-      departmentId: department,
+      departmentId: departmentId,
       ...restOfData,
     };
     if (payload) {
@@ -87,9 +93,11 @@ export default function Form() {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (payload) => {
+    const FinalResponse = await bookAppointment(payload);
     console.log(data, "Payload received successfully");
-    // reset();
+    console.log(FinalResponse);
+    reset();
   };
 
   useEffect(() => {
@@ -131,19 +139,21 @@ export default function Form() {
   }, [key]);
 
   useEffect(() => {
-    const getDoctor = async (departmentId, time, date) => {
+    const getDoctor = async (selectedDepartmentId, time, date) => {
       const availableDoctors = await getAvailableDoctors(
-        departmentId,
+        selectedDepartmentId,
         time,
         date
       );
-      setDoctors(...[availableDoctors?.availableDoctors[0]]);
+      console.log("List of available doctor"), availableDoctors;
     };
-
-    if (date && time && departmentId) {
-      getDoctor(departmentId, time, date);
-    }
-  }, [date, time, departmentId]);
+    const FetchDoctors = async () => {
+      if (date && time && selectedDepartmentId) {
+        getDoctor(selectedDepartmentId, time, date);
+      }
+    };
+    FetchDoctors();
+  }, [date, time, selectedDepartmentId]);
 
   return (
     <>
@@ -219,7 +229,7 @@ export default function Form() {
             <Grid container spacing={6} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
-                  name="department"
+                  name="departmentId"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
@@ -231,13 +241,13 @@ export default function Form() {
                       placeholder="Select a Department"
                       value={value}
                       onChange={onChange}
-                      error={Boolean(errors.department)}
-                      {...(errors.department && {
+                      error={Boolean(errors.departmentId)}
+                      {...(errors.departmentId && {
                         helperText: "Department is required",
                       })}
                     >
                       <MenuItem>Select Department</MenuItem>
-                      {department?.map((department) => (
+                      {departments?.map((department) => (
                         <MenuItem key={department?.id} value={department?.id}>
                           {department?.name}
                         </MenuItem>
@@ -248,7 +258,7 @@ export default function Form() {
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
-                  name="service"
+                  name="serviceId"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
@@ -260,8 +270,8 @@ export default function Form() {
                       placeholder="What service do you need?"
                       value={value}
                       onChange={onChange}
-                      error={Boolean(errors.staff)}
-                      {...(errors.staff && {
+                      error={Boolean(errors.serviceId)}
+                      {...(errors.serviceId && {
                         helperText: "Please select a service",
                       })}
                     >
@@ -331,7 +341,7 @@ export default function Form() {
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <Controller
-                  name="doctor"
+                  name="doctorId"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
@@ -343,8 +353,8 @@ export default function Form() {
                       placeholder="Select a Doctor"
                       value={value}
                       onChange={onChange}
-                      error={Boolean(errors.doctor)}
-                      {...(errors.doctor && {
+                      error={Boolean(errors.doctorId)}
+                      {...(errors.doctorId && {
                         helperText: "Please select a doctor",
                       })}
                     >
