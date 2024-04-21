@@ -32,7 +32,10 @@ const Header = () => {
         <Box>
           <Box>
             <Box variant="img">
-              <Link class="dark-logo" href="https://dedahospital.com/newsite/">
+              <Link
+                className="dark-logo"
+                href="https://dedahospital.com/newsite/"
+              >
                 <Image
                   src={Logo}
                   alt="Deda hospital logo"

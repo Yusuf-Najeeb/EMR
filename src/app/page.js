@@ -39,7 +39,7 @@ export default function Form() {
   const [departments, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
-  // const [verifyPatient, setVerifyPatient] = useState(false);
+  const [verifyPatient, setVerifyPatient] = useState(false);
   const [patients, setPatient] = useState([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -54,6 +54,7 @@ export default function Form() {
     appointmentDate: "",
     time: "",
     message: "",
+    verifyPatient: "",
   };
 
   const {
@@ -128,10 +129,12 @@ export default function Form() {
 
       if (data?.patient) {
         setPatient(...[data?.patient[0]]);
+        setVerifyPatient(true);
       }
 
       if (data?.patients) {
         setPatient(...[data?.patients]);
+        setVerifyPatient(true);
       }
     };
 
@@ -145,7 +148,8 @@ export default function Form() {
         time,
         date
       );
-      console.log("List of available doctor"), availableDoctors;
+      const doctorsArray = availableDoctors?.availableDoctors;
+      setDoctors(doctorsArray);
     };
     const FetchDoctors = async () => {
       if (date && time && selectedDepartmentId) {
@@ -161,10 +165,10 @@ export default function Form() {
       <Hero />
       <Box
         sx={{
-          width: "75%",
+          width: { xs: "95%", md: "75%" },
           mx: "auto",
           borderRadius: 2,
-          p: 6,
+          p: { xs: 3, md: 6 },
           my: 2,
           boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
         }}
@@ -203,7 +207,7 @@ export default function Form() {
                     <TextField
                       fullWidth
                       select
-                      // disabled={() => handleChange(e)}
+                      disabled={!verifyPatient}
                       label="Patient Info"
                       placeholder="Confirm your name"
                       value={value}
@@ -358,7 +362,11 @@ export default function Form() {
                         helperText: "Please select a doctor",
                       })}
                     >
-                      <MenuItem>Select Staff</MenuItem>
+                      {doctors.length === 0 ? (
+                        <MenuItem>No doctors found</MenuItem>
+                      ) : (
+                        <MenuItem>Select Staff</MenuItem>
+                      )}
                       {doctors?.map((doctor) => (
                         <MenuItem key={doctor.id} value={doctor.value}>
                           {doctor.label}
