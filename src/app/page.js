@@ -410,15 +410,21 @@ export default function Form() {
                 justifyContent: "center",
               }}
             >
-              <Button type="submit" variant="contained" disabled={isSubmitting}>
+              <Button
+                sx={{
+                  background: "rgb(57, 108, 240)",
+                  "&:hover": {
+                    background: "rgb(75, 168, 86)",
+                  },
+                }}
+                type="submit"
+                variant="contained"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
-                  <CircularProgress
-                    size={20}
-                    color="secondary"
-                    sx={{ ml: 3 }}
-                  />
+                  <CircularProgress size={20} sx={{ ml: 3 }} />
                 ) : (
-                  "Schedule Appointment"
+                  "Book Appointment"
                 )}
               </Button>
             </Box>
