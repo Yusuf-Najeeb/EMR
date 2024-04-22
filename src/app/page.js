@@ -412,9 +412,9 @@ export default function Form() {
             >
               <Button
                 sx={{
-                  background: "rgb(57, 108, 240)",
+                  background: "rgba(57, 108, 240, 0.9)",
                   "&:hover": {
-                    background: "rgb(75, 168, 86)",
+                    background: "rgba(75, 168, 86, 0.6)",
                   },
                 }}
                 type="submit"
