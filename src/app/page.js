@@ -34,6 +34,7 @@ import {
   getAvailableDoctors,
   bookAppointment,
 } from "@/store";
+import { patientName } from "@/utils/utils";
 
 export default function Form() {
   const [departments, setDepartment] = useState([]);
@@ -221,7 +222,7 @@ export default function Form() {
                       <MenuItem>Confirm details</MenuItem>
                       {patients.map((patient) => (
                         <MenuItem key={patient.id} value={patient.id}>
-                          {patient.other_names}
+                          {patientName(patient, true)}
                         </MenuItem>
                       ))}
                     </TextField>
