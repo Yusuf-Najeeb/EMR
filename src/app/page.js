@@ -35,8 +35,10 @@ import {
   bookAppointment,
 } from "@/store";
 import { patientName } from "@/utils/utils";
+import Loading from "./components/Loading";
 
 export default function Form() {
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -96,19 +98,33 @@ export default function Form() {
   };
 
   const onSubmit = async (payload) => {
-    const FinalResponse = await bookAppointment(payload);
-    console.log(data, "Payload received successfully");
-    console.log(FinalResponse);
-    reset();
+    try {
+      setLoading(true);
+      const FinalResponse = await bookAppointment(payload);
+      console.log(data, "Payload received successfully");
+      console.log(FinalResponse);
+      reset();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const allDepartments = await getAllDepartments();
-      const allServices = await getAllServices();
+      try {
+        setLoading(true);
+        const allDepartments = await getAllDepartments();
+        const allServices = await getAllServices();
 
-      setDepartment(allDepartments);
-      setServices(allServices);
+        setDepartment(allDepartments);
+        setServices(allServices);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error?.message || "error occurred!");
+      }
     };
 
     fetchData();
@@ -124,8 +140,10 @@ export default function Form() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchPatientId]);
 
-  useEffect(() => {
-    const patientData = async (key) => {
+  const patientData = async (key) => {
+    try {
+      setLoading(true);
+
       const data = await getPatients(key);
 
       if (data?.patient) {
@@ -137,20 +155,30 @@ export default function Form() {
         setPatient(...[data?.patients]);
         setVerifyPatient(true);
       }
-    };
 
-    patientData(key);
-  }, [key]);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
+  };
 
   useEffect(() => {
     const getDoctor = async (selectedDepartmentId, time, date) => {
-      const availableDoctors = await getAvailableDoctors(
-        selectedDepartmentId,
-        time,
-        date
-      );
-      const doctorsArray = availableDoctors?.availableDoctors;
-      setDoctors(doctorsArray);
+      try {
+        setLoading(true);
+        const availableDoctors = await getAvailableDoctors(
+          selectedDepartmentId,
+          time,
+          date
+        );
+        const doctorsArray = availableDoctors?.availableDoctors;
+        setDoctors(doctorsArray);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error?.message || "error occurred!");
+      }
     };
     const FetchDoctors = async () => {
       if (date && time && selectedDepartmentId) {
@@ -162,8 +190,6 @@ export default function Form() {
 
   return (
     <>
-      <Header />
-      <Hero />
       <Box
         sx={{
           width: { xs: "95%", md: "75%" },
@@ -175,264 +201,270 @@ export default function Form() {
         }}
       >
         <Typography variant="h5">Book Appointment</Typography>
-        <Box>
-          <form onSubmit={handleSubmit(handleData)}>
-            <Grid container spacing={6} sx={{ py: 2 }}>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="patientId"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      label="Patient ID"
-                      placeholder="Enter Email/Phone/User-ID"
-                      value={value}
-                      onChange={onChange}
-                      required
-                      error={Boolean(errors.username)}
-                      {...(errors.username && {
-                        helperText: "Email/Phone/User-ID is required ",
-                      })}
-                    />
-                  )}
-                />
+        {loading ? (
+          <Loading />
+        ) : (
+          <Box>
+            <form onSubmit={handleSubmit(handleData)}>
+              <Grid container spacing={6} sx={{ py: 2 }}>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="patientId"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        label="Patient ID"
+                        placeholder="Enter Email/Phone/User-ID"
+                        value={value}
+                        onChange={onChange}
+                        onBlur={() => patientData(key)}
+                        required
+                        error={Boolean(errors.username)}
+                        {...(errors.username && {
+                          helperText: "Email/Phone/User-ID is required ",
+                        })}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="verifyPatient"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        select
+                        disabled={!verifyPatient}
+                        label="Patient Info"
+                        placeholder="Confirm your name"
+                        value={value}
+                        onChange={onChange}
+                        required
+                        error={Boolean(errors.verifyInfo)}
+                        {...(errors.verifyInfo && {
+                          helperText: "Patient Info is required",
+                        })}
+                      >
+                        <MenuItem>Confirm details</MenuItem>
+                        {patients.map((patient) => (
+                          <MenuItem key={patient.id} value={patient.id}>
+                            {patientName(patient, true)}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="verifyPatient"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      select
-                      disabled={!verifyPatient}
-                      label="Patient Info"
-                      placeholder="Confirm your name"
-                      value={value}
-                      onChange={onChange}
-                      required
-                      error={Boolean(errors.verifyInfo)}
-                      {...(errors.verifyInfo && {
-                        helperText: "Patient Info is required",
-                      })}
-                    >
-                      <MenuItem>Confirm details</MenuItem>
-                      {patients.map((patient) => (
-                        <MenuItem key={patient.id} value={patient.id}>
-                          {patientName(patient, true)}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </Grid>
-            </Grid>
 
-            <Grid container spacing={6} sx={{ py: 2 }}>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="departmentId"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      label="Department"
-                      required
-                      select
-                      placeholder="Select a Department"
-                      value={value}
-                      onChange={onChange}
-                      error={Boolean(errors.departmentId)}
-                      {...(errors.departmentId && {
-                        helperText: "Department is required",
-                      })}
-                    >
-                      <MenuItem>Select Department</MenuItem>
-                      {departments?.map((department) => (
-                        <MenuItem key={department?.id} value={department?.id}>
-                          {department?.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="serviceId"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      select
-                      label="Services"
-                      required
-                      placeholder="What service do you need?"
-                      value={value}
-                      onChange={onChange}
-                      error={Boolean(errors.serviceId)}
-                      {...(errors.serviceId && {
-                        helperText: "Please select a service",
-                      })}
-                    >
-                      <MenuItem>Select Staff</MenuItem>
-                      {services?.map((service) => (
-                        <MenuItem key={service?.id} value={service?.id}>
-                          {service?.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={6} sx={{ py: 2 }}>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="time"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      type="time"
-                      value={value}
-                      sx={{ mr: 3, width: "37%" }}
-                      // label="Time"
-                      required
-                      onChange={onChange}
-                      placeholder="00:00"
-                      error={Boolean(errors.time)}
-                      {...(errors.time && {
-                        helperText: errors.time.message,
-                      })}
-                    />
-                  )}
-                />
-
-                <Controller
-                  name="appointmentDate"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <DatePicker
-                      selected={value}
-                      popperPlacement="bottom-end"
-                      showYearDropdown
-                      showMonthDropdown
-                      onChange={(e) => onChange(e)}
-                      placeholderText="2022-05-07"
-                      customInput={
-                        <TextField
-                          label="Date"
-                          required
-                          value={value}
-                          sx={{ width: "100%" }}
-                          onChange={onChange}
-                          error={Boolean(errors.appointmentDate)}
-                          {...(errors.appointmentDate && {
-                            helperText: "Date is required",
-                          })}
-                        />
-                      }
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <Controller
-                  name="doctorId"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      select
-                      label="Doctor"
-                      required
-                      placeholder="Select a Doctor"
-                      value={value}
-                      onChange={onChange}
-                      error={Boolean(errors.doctorId)}
-                      {...(errors.doctorId && {
-                        helperText: "Please select a doctor",
-                      })}
-                    >
-                      {doctors.length === 0 ? (
-                        <MenuItem>No doctors found</MenuItem>
-                      ) : (
+              <Grid container spacing={6} sx={{ py: 2 }}>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="departmentId"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        label="Department"
+                        required
+                        select
+                        placeholder="Select a Department"
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors.departmentId)}
+                        {...(errors.departmentId && {
+                          helperText: "Department is required",
+                        })}
+                      >
+                        <MenuItem>Select Department</MenuItem>
+                        {departments?.map((department) => (
+                          <MenuItem key={department?.id} value={department?.id}>
+                            {department?.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="serviceId"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        select
+                        label="Services"
+                        required
+                        placeholder="What service do you need?"
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors.serviceId)}
+                        {...(errors.serviceId && {
+                          helperText: "Please select a service",
+                        })}
+                      >
                         <MenuItem>Select Staff</MenuItem>
-                      )}
-                      {doctors?.map((doctor) => (
-                        <MenuItem key={doctor.id} value={doctor.value}>
-                          {doctor.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
+                        {services?.map((service) => (
+                          <MenuItem key={service?.id} value={service?.id}>
+                            {service?.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Grid container spacing={6} sx={{ py: 2 }}>
-              <Grid item xs={12} sm={12}>
-                <Controller
-                  name="message"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={5}
-                      label="Optional Message"
-                      value={value}
-                      onChange={onChange}
-                      error={Boolean(errors.message)}
-                      {...(errors.message && {
-                        helperText: errors.message.message,
-                      })}
-                    />
-                  )}
-                />
+              <Grid container spacing={6} sx={{ py: 2 }}>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="time"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        type="time"
+                        value={value}
+                        sx={{ mr: 3, width: "37%" }}
+                        // label="Time"
+                        required
+                        onChange={onChange}
+                        placeholder="00:00"
+                        error={Boolean(errors.time)}
+                        {...(errors.time && {
+                          helperText: errors.time.message,
+                        })}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="appointmentDate"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <DatePicker
+                        selected={value}
+                        popperPlacement="bottom-end"
+                        showYearDropdown
+                        showMonthDropdown
+                        onChange={(e) => onChange(e)}
+                        placeholderText="2022-05-07"
+                        customInput={
+                          <TextField
+                            label="Date"
+                            required
+                            value={value}
+                            sx={{ width: "100%" }}
+                            onChange={onChange}
+                            error={Boolean(errors.appointmentDate)}
+                            {...(errors.appointmentDate && {
+                              helperText: "Date is required",
+                            })}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                  <Controller
+                    name="doctorId"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        select
+                        label="Doctor"
+                        required
+                        placeholder="Select a Doctor"
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors.doctorId)}
+                        {...(errors.doctorId && {
+                          helperText: "Please select a doctor",
+                        })}
+                      >
+                        {doctors.length === 0 ? (
+                          <MenuItem>No doctors found</MenuItem>
+                        ) : (
+                          <MenuItem>Select Staff</MenuItem>
+                        )}
+                        {doctors?.map((doctor) => (
+                          <MenuItem key={doctor.id} value={doctor.value}>
+                            {doctor.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Box
-              sx={{
-                mt: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Button
+              <Grid container spacing={6} sx={{ py: 2 }}>
+                <Grid item xs={12} sm={12}>
+                  <Controller
+                    name="message"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={5}
+                        label="Optional Message"
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors.message)}
+                        {...(errors.message && {
+                          helperText: errors.message.message,
+                        })}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Box
                 sx={{
-                  background: "rgb(57, 108, 240)",
-                  "&:hover": {
-                    background: "rgb(75, 168, 86)",
-                  },
+                  mt: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-                type="submit"
-                variant="contained"
-                disabled={isSubmitting}
               >
-                {isSubmitting ? (
-                  <CircularProgress size={20} sx={{ ml: 3 }} />
-                ) : (
-                  "Book Appointment"
-                )}
-              </Button>
-            </Box>
-          </form>
-        </Box>
+                <Button
+                  sx={{
+                    background: "#23A455",
+                    "&:hover": {
+                      background: "#23A455",
+                    },
+                    fontSize: "15px",
+                    p: 2,
+                  }}
+                  type="submit"
+                  variant="contained"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <CircularProgress size={20} sx={{ ml: 3 }} />
+                  ) : (
+                    "Book Appointment"
+                  )}
+                </Button>
+              </Box>
+            </form>
+          </Box>
+        )}
       </Box>
-      <Footer />
     </>
   );
 }

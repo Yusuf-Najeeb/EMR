@@ -86,7 +86,7 @@ export const getAvailableDoctors = async (departmentId, time, date) => {
   }
 };
 
-export const bookAppointment = (query) => {
+export const bookAppointment = async (query) => {
   const {
     departmentId,
     serviceId,
@@ -97,22 +97,30 @@ export const bookAppointment = (query) => {
     ...restOfData
   } = query;
   try {
-    fetch("https://immortal-lab-key.ngrok-free.app/public/bookings/new", {
-      method: "POST",
-      body: JSON.stringify({
-        ...restOfData,
-        appointment_date: `${date} ${time}`,
-        isAdvanced: true,
-        doctor_id: doctorId,
-        department_id: departmentId,
-        patient_id: patientId,
-        service_id: serviceId,
-      }),
-      headers: {
-        "Content-type": "application/json",
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
+    const response = await fetch(
+      "https://immortal-lab-key.ngrok-free.app/public/bookings/new",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          ...restOfData,
+          appointment_date: `${date} ${time}`,
+          isAdvanced: true,
+          doctor_id: doctorId,
+          department_id: departmentId,
+          patient_id: patientId,
+          service_id: serviceId,
+        }),
+        headers: {
+          "Content-type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+      }
+    );
+    if (!response.ok)
+      throw new Error("Error fetching doctors", response.status);
+    const data = await response.json();
+
+    return data;
   } catch (err) {
     console.log(err);
   }
