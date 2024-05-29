@@ -449,7 +449,7 @@ export default function Form() {
                 {isSubmitting ? (
                   <CircularProgress size={20} sx={{ ml: 3 }} />
                 ) : (
-                  "Book Appointment"
+                  "Make an Appointment"
                 )}
               </Button>
             </Box>
