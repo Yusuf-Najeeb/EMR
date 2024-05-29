@@ -192,7 +192,7 @@ export default function Form() {
         boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
       }}
     >
-      <Typography variant="h5">Book Appointment</Typography>
+      <Typography variant="h5">Book An Appointment</Typography>
       {loading ? (
         <Loading />
       ) : (
