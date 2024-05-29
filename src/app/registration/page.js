@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import "./globals.css";
+// import "./globals.css";
 
 //** MUI imports */
 import Button from "@mui/material/Button";
@@ -18,8 +18,8 @@ import "react-datepicker/dist/react-datepicker.css";
 // ** Components & Utils import
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { appointmentBookingSchema } from "@/Schema";
-import { formatDateToYYYMMDDD } from "../utils/format";
+import { newPatientSchema } from "@/Schema";
+import { formatDateToYYYMMDDD } from "../../utils/format";
 import {
   getAllDepartments,
   getAllServices,
@@ -28,29 +28,27 @@ import {
   bookAppointment,
 } from "@/store";
 import { patientName } from "@/utils/utils";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 
-export default function Form() {
+// ** fake-db
+const patients = [];
+const departments = [];
+const services = [];
+const doctors = [];
+
+const Registration = () => {
+  // ** States
   const [loading, setLoading] = useState(false);
-  const [departments, setDepartment] = useState([]);
-  const [services, setServices] = useState([]);
-  const [doctors, setDoctors] = useState([]);
   const [verifyPatient, setVerifyPatient] = useState(false);
-  const [patients, setPatient] = useState([]);
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
-  const [key, setKey] = useState("");
 
   const defaultValues = {
-    patientId: "",
-    departmentId: "",
-    serviceId: "",
-    doctorId: "",
-    appointmentDate: "",
-    time: "",
-    message: "",
-    verifyPatient: "",
+    surname: "",
+    otherNames: "",
+    email: "",
+    phoneNumber: "",
+    gender: "",
+    dob: "",
+    address: "",
   };
 
   const {
@@ -61,126 +59,12 @@ export default function Form() {
   } = useForm({
     defaultValues,
     mode: "onChange",
-    resolver: yupResolver(appointmentBookingSchema),
+    resolver: yupResolver(newPatientSchema),
   });
 
-  const getTime = useWatch({ control, name: "time" });
-  const getDate = useWatch({ control, name: "appointmentDate" });
-  const formatDate = formatDateToYYYMMDDD(getDate);
-  const getDepartment = useWatch({ control, name: "departmentId" });
-
-  useEffect(() => {
-    setTime(getTime);
-    setSelectedDepartmentId(getDepartment);
-    setDate(formatDate);
-  }, [formatDate, getTime, getDepartment]);
-
-  const handleData = (data) => {
-    const { appointmentDate, time, departmentId, ...restOfData } = data;
-    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
-
-    const payload = {
-      date: formattedDate,
-      time,
-      departmentId: departmentId,
-      ...restOfData,
-    };
-    if (payload) {
-      onSubmit(payload);
-    }
+  const handleData = () => {
+    console.log("nothing");
   };
-
-  const onSubmit = async (payload) => {
-    try {
-      setLoading(true);
-      const FinalResponse = await bookAppointment(payload);
-      console.log(data, "Payload received successfully");
-      console.log(FinalResponse);
-      reset();
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error?.message || "error occurred!");
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const allDepartments = await getAllDepartments();
-        const allServices = await getAllServices();
-
-        setDepartment(allDepartments);
-        setServices(allServices);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log(error?.message || "error occurred!");
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const watchPatientId = useWatch({ control, name: "patientId" });
-
-  useEffect(() => {
-    if (key !== watchPatientId) {
-      setKey(watchPatientId);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchPatientId]);
-
-  const patientData = async (key) => {
-    try {
-      setLoading(true);
-
-      const data = await getPatients(key);
-
-      if (data?.patient) {
-        setPatient(...[data?.patient[0]]);
-        setVerifyPatient(true);
-      }
-
-      if (data?.patients) {
-        setPatient(...[data?.patients]);
-        setVerifyPatient(true);
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error?.message || "error occurred!");
-    }
-  };
-
-  useEffect(() => {
-    const getDoctor = async (selectedDepartmentId, time, date) => {
-      try {
-        setLoading(true);
-        const availableDoctors = await getAvailableDoctors(
-          selectedDepartmentId,
-          time,
-          date
-        );
-        const doctorsArray = availableDoctors?.availableDoctors;
-        setDoctors(doctorsArray);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log(error?.message || "error occurred!");
-      }
-    };
-    const FetchDoctors = async () => {
-      if (date && time && selectedDepartmentId) {
-        getDoctor(selectedDepartmentId, time, date);
-      }
-    };
-    FetchDoctors();
-  }, [date, time, selectedDepartmentId]);
-
   return (
     <Box
       sx={{
@@ -458,4 +342,6 @@ export default function Form() {
       )}
     </Box>
   );
-}
+};
+
+export default Registration;
