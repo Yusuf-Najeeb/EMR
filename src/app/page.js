@@ -2,31 +2,23 @@
 import React, { useState, useEffect } from "react";
 import "./globals.css";
 
-import {
-  Button,
-  Box,
-  Typography,
-  MenuItem,
-  Grid,
-  TextField,
-  CircularProgress,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
+
+//** Third-Party Imports
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+// ** Components & Utils import
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema } from "@/Schema";
 import { formatDateToYYYMMDDD } from "../utils/format";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Footer from "./components/Footer";
-
-// const doctors = [
-//   { id: 1, value: "Dr. Abel Yisa", label: "Dr. Abel Yisa" },
-//   { id: 1, value: "Dr. Hanu Amman", label: "Dr. Hanu Amman" },
-// ];
-
-//Utils
 import {
   getAllDepartments,
   getAllServices,
@@ -34,8 +26,11 @@ import {
   getAvailableDoctors,
   bookAppointment,
 } from "@/store";
+import { patientName } from "@/utils/utils";
+import Loading from "./components/Loading";
 
 export default function Form() {
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartment] = useState([]);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -95,19 +90,33 @@ export default function Form() {
   };
 
   const onSubmit = async (payload) => {
-    const FinalResponse = await bookAppointment(payload);
-    console.log(data, "Payload received successfully");
-    console.log(FinalResponse);
-    reset();
+    try {
+      setLoading(true);
+      const FinalResponse = await bookAppointment(payload);
+      console.log(data, "Payload received successfully");
+      console.log(FinalResponse);
+      reset();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const allDepartments = await getAllDepartments();
-      const allServices = await getAllServices();
+      try {
+        setLoading(true);
+        const allDepartments = await getAllDepartments();
+        const allServices = await getAllServices();
 
-      setDepartment(allDepartments);
-      setServices(allServices);
+        setDepartment(allDepartments);
+        setServices(allServices);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error?.message || "error occurred!");
+      }
     };
 
     fetchData();
@@ -123,8 +132,10 @@ export default function Form() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchPatientId]);
 
-  useEffect(() => {
-    const patientData = async (key) => {
+  const patientData = async (key) => {
+    try {
+      setLoading(true);
+
       const data = await getPatients(key);
 
       if (data?.patient) {
@@ -136,20 +147,30 @@ export default function Form() {
         setPatient(...[data?.patients]);
         setVerifyPatient(true);
       }
-    };
 
-    patientData(key);
-  }, [key]);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
+  };
 
   useEffect(() => {
     const getDoctor = async (selectedDepartmentId, time, date) => {
-      const availableDoctors = await getAvailableDoctors(
-        selectedDepartmentId,
-        time,
-        date
-      );
-      const doctorsArray = availableDoctors?.availableDoctors;
-      setDoctors(doctorsArray);
+      try {
+        setLoading(true);
+        const availableDoctors = await getAvailableDoctors(
+          selectedDepartmentId,
+          time,
+          date
+        );
+        const doctorsArray = availableDoctors?.availableDoctors;
+        setDoctors(doctorsArray);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error?.message || "error occurred!");
+      }
     };
     const FetchDoctors = async () => {
       if (date && time && selectedDepartmentId) {
@@ -160,20 +181,20 @@ export default function Form() {
   }, [date, time, selectedDepartmentId]);
 
   return (
-    <>
-      <Header />
-      <Hero />
-      <Box
-        sx={{
-          width: { xs: "95%", md: "75%" },
-          mx: "auto",
-          borderRadius: 2,
-          p: { xs: 3, md: 6 },
-          my: 2,
-          boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
-        }}
-      >
-        <Typography variant="h5">Book Appointment</Typography>
+    <Box
+      sx={{
+        width: { xs: "95%", md: "75%" },
+        mx: "auto",
+        borderRadius: 2,
+        p: { xs: 3, md: 6 },
+        my: 2,
+        boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
+      }}
+    >
+      <Typography variant="h5">Book Appointment</Typography>
+      {loading ? (
+        <Loading />
+      ) : (
         <Box>
           <form onSubmit={handleSubmit(handleData)}>
             <Grid container spacing={6} sx={{ py: 2 }}>
@@ -189,6 +210,7 @@ export default function Form() {
                       placeholder="Enter Email/Phone/User-ID"
                       value={value}
                       onChange={onChange}
+                      onBlur={() => patientData(key)}
                       required
                       error={Boolean(errors.username)}
                       {...(errors.username && {
@@ -221,7 +243,7 @@ export default function Form() {
                       <MenuItem>Confirm details</MenuItem>
                       {patients.map((patient) => (
                         <MenuItem key={patient.id} value={patient.id}>
-                          {patient.other_names}
+                          {patientName(patient, true)}
                         </MenuItem>
                       ))}
                     </TextField>
@@ -412,10 +434,12 @@ export default function Form() {
             >
               <Button
                 sx={{
-                  background: "rgba(57, 108, 240, 0.9)",
+                  background: "#23A455",
                   "&:hover": {
-                    background: "rgba(75, 168, 86, 0.6)",
+                    background: "#23A455",
                   },
+                  fontSize: "15px",
+                  p: 2,
                 }}
                 type="submit"
                 variant="contained"
@@ -430,8 +454,7 @@ export default function Form() {
             </Box>
           </form>
         </Box>
-      </Box>
-      <Footer />
-    </>
+      )}
+    </Box>
   );
 }

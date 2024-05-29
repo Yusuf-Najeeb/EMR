@@ -4,6 +4,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,8 +16,349 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en-US" style={{ overflow: "hidden" }}>
+      <head>
+        <meta charset="UTF-8" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <link rel="profile" href="https://gmpg.org/xfn/11" />
+        <title>Appointments &#8211; Deda Hospital</title>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+        <link
+          rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+          integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+          crossorigin="anonymous"
+        ></link>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Deda Hospital &raquo; Feed"
+          href="https://dedahospital.com/newsite/feed/"
+        />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Deda Hospital &raquo; Comments Feed"
+          href="https://dedahospital.com/newsite/comments/feed/"
+        />
+        <link
+          rel="stylesheet"
+          id="layerslider-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/LayerSlider/assets/static/layerslider/css/layerslider.css?ver=7.10.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="contact-form-7-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.9.5"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="woocommerce-layout-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=8.9.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="woocommerce-smallscreen-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=8.9.1"
+          type="text/css"
+          media="only screen and (max-width: 767px)"
+        />
+        <link
+          rel="stylesheet"
+          id="woocommerce-general-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/woocommerce.css?ver=8.9.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-icons-ekiticons-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementskit-lite/modules/elementskit-icon-pack/assets/css/ekiticons.css?ver=3.1.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-icons-shared-0-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-icons-fa-regular-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/font-awesome/css/regular.min.css?ver=5.15.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-icons-fa-solid-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.min.css?ver=5.15.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="photoswipe-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/photoswipe/photoswipe.min.css?ver=8.9.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="photoswipe-default-skin-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/photoswipe/default-skin/default-skin.min.css?ver=8.9.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="rtsb-modules-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/shopbuilder/assets/modules/modules.css?ver=2.1.11"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-icons-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.29.0"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-frontend-css"
+          href="https://dedahospital.com/newsite/wp-content/uploads/elementor/css/custom-frontend.min.css?ver=1716376812"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="swiper-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=8.4.5"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-post-3000-css"
+          href="https://dedahospital.com/newsite/wp-content/uploads/elementor/css/post-3000.css?ver=1716376812"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="font-awesome-5-all-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/font-awesome/css/all.min.css?ver=3.21.7"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="font-awesome-4-shim-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementor/assets/lib/font-awesome/css/v4-shims.min.css?ver=3.21.7"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-global-css"
+          href="https://dedahospital.com/newsite/wp-content/uploads/elementor/css/global.css?ver=1716376813"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="elementor-post-6680-css"
+          href="https://dedahospital.com/newsite/wp-content/uploads/elementor/css/post-6680.css?ver=1716377593"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="rtsb-frontend-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/shopbuilder/assets/css/frontend/frontend.css?ver=2.1.11"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="rtsb-fonts-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/shopbuilder/assets/css/frontend/rtsb-fonts.css?ver=2.1.11"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="bootstrap-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/css/bootstrap.min.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="font-awesome-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/css/font-awesome.min.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="flaticon-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/fonts/flaticon.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="animate-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/css/animate.min.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="select2-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/woocommerce/assets/css/select2.css?ver=8.9.1"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="medilink-style-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/css/style.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="medilink-elementor-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink/assets/css/elementor.css?ver=2.0.6"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="medilink-child-style-css"
+          href="https://dedahospital.com/newsite/wp-content/themes/medilink-child/style.css?ver=6.5.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="ekit-widget-styles-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementskit-lite/widgets/init/assets/css/widget-styles.css?ver=3.1.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="stylesheet"
+          id="ekit-responsive-css"
+          href="https://dedahospital.com/newsite/wp-content/plugins/elementskit-lite/widgets/init/assets/css/responsive.css?ver=3.1.3"
+          type="text/css"
+          media="all"
+        />
+        <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css?family=Open%20Sans:500,400%7CRaleway:700,600&#038;display=swap&#038;ver=1715850662"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open%20Sans:500,400%7CRaleway:700,600&#038;display=swap&#038;ver=1715850662"
+          media="print"
+          onload="this.media='all'"
+        />
+        <noscript>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Open%20Sans:500,400%7CRaleway:700,600&#038;display=swap&#038;ver=1715850662"
+          />
+        </noscript>
+        <link
+          rel="stylesheet"
+          id="google-fonts-1-css"
+          href="https://fonts.googleapis.com/css?family=Roboto%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRoboto+Slab%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7CRaleway%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic%7COpen+Sans%3A100%2C100italic%2C200%2C200italic%2C300%2C300italic%2C400%2C400italic%2C500%2C500italic%2C600%2C600italic%2C700%2C700italic%2C800%2C800italic%2C900%2C900italic&#038;display=auto&#038;ver=6.5.3"
+          type="text/css"
+          media="all"
+        />
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossOrigin />
+
+        <meta
+          name="generator"
+          content="Powered by LayerSlider 7.10.1 - Build Heros, Sliders, and Popups. Create Animations and Beautiful, Rich Web Content as Easy as Never Before on WordPress."
+        />
+        <link
+          rel="https://api.w.org/"
+          href="https://dedahospital.com/newsite/wp-json/"
+        />
+        <link
+          rel="alternate"
+          type="application/json"
+          href="https://dedahospital.com/newsite/wp-json/wp/v2/pages/6680"
+        />
+        <link
+          rel="EditURI"
+          type="application/rsd+xml"
+          title="RSD"
+          href="https://dedahospital.com/newsite/xmlrpc.php?rsd"
+        />
+        <meta name="generator" content="WordPress 6.5.3" />
+        <meta name="generator" content="WooCommerce 8.9.1" />
+        <link
+          rel="canonical"
+          href="https://dedahospital.com/newsite/customer-support/"
+        />
+        <link rel="shortlink" href="https://dedahospital.com/newsite/?p=6680" />
+        <link
+          rel="alternate"
+          type="application/json+oembed"
+          href="https://dedahospital.com/newsite/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdedahospital.com%2Fnewsite%2Fcustomer-support%2F"
+        />
+        <link
+          rel="alternate"
+          type="text/xml+oembed"
+          href="https://dedahospital.com/newsite/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fdedahospital.com%2Fnewsite%2Fcustomer-support%2F&#038;format=xml"
+        />
+        <meta name="generator" content="Redux 4.4.16" />
+        <meta
+          name="generator"
+          content="Elementor 3.21.7; features: e_optimized_assets_loading, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto"
+        />
+
+        <link
+          rel="icon"
+          href="https://dedahospital.com/newsite/wp-content/uploads/2020/03/cropped-favicon-70x70.png"
+          sizes="32x32"
+        />
+        <link
+          rel="icon"
+          href="https://dedahospital.com/newsite/wp-content/uploads/2020/03/cropped-favicon-230x230.png"
+          sizes="192x192"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="https://dedahospital.com/newsite/wp-content/uploads/2020/03/cropped-favicon-230x230.png"
+        />
+        <meta
+          name="msapplication-TileImage"
+          content="https://dedahospital.com/newsite/wp-content/uploads/2020/03/cropped-favicon-300x300.png"
+        />
+      </head>
+      {/* <body className={inter.className}> */}
+      <body className="page-template page-template-elementor_header_footer page page-id-6680 wp-embed-responsive theme-medilink woocommerce-no-js rtsb-shopbuilder-plugin rtsb_theme_medilink woocommerce non-stick header-style-1 non-trheader carton no-sidebar product-grid-view elementor-default elementor-template-full-width elementor-kit-3000 elementor-page elementor-page-6680">
+        <Header />
+        <div style={{ padding: "20px", overflow: "hidden" }}>{children}</div>
+        <Footer />
+      </body>
     </html>
   );
 }
