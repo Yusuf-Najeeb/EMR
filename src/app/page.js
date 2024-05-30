@@ -29,6 +29,7 @@ import {
 } from "@/store";
 import { patientName } from "@/utils/utils";
 import Loading from "../components/Loading";
+import AddPatient from "../components/AddPatient";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
@@ -41,6 +42,7 @@ export default function Form() {
   const [time, setTime] = useState("");
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
   const [key, setKey] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const defaultValues = {
     patientId: "",
@@ -63,6 +65,14 @@ export default function Form() {
     mode: "onChange",
     resolver: yupResolver(appointmentBookingSchema),
   });
+
+  const toggleModal = () => {
+    setOpenModal(!openModal);
+  };
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
 
   const getTime = useWatch({ control, name: "time" });
   const getDate = useWatch({ control, name: "appointmentDate" });
@@ -185,14 +195,21 @@ export default function Form() {
     <Box
       sx={{
         width: { xs: "95%", md: "75%" },
-        mx: "auto",
         borderRadius: 2,
         p: { xs: 3, md: 6 },
-        my: 2,
         boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
+        my: 5,
+        mx: "auto",
+        background: "white",
       }}
     >
-      <Typography variant="h5" sx={{ fontSize: "2rem", fontWeight: "400" }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontSize: "2rem",
+          fontWeight: "400",
+        }}
+      >
         Book An Appointment
       </Typography>
       {loading ? (
@@ -431,7 +448,7 @@ export default function Form() {
 
             <Box
               sx={{
-                mt: "10px",
+                mt: 4,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -444,6 +461,7 @@ export default function Form() {
                     background: "#23A455",
                   },
                   fontSize: "12px",
+                  ":focus": { outline: "none" },
                   px: 3,
                   py: 1,
                 }}
@@ -458,9 +476,27 @@ export default function Form() {
                 )}
               </Button>
             </Box>
+
+            <Typography
+              sx={{ fontSize: "1.35rem", mt: 2, textAlign: "center" }}
+            >
+              New to Deda Hospital?{" "}
+              <Button
+                onClick={handleOpenModal}
+                sx={{
+                  color: "#23A455",
+                  ":focus": { outline: "none" },
+                  textDecoration: "underline",
+                  "&:hover": { textDecoration: "none" },
+                }}
+              >
+                Create Profile
+              </Button>
+            </Typography>
           </form>
         </Box>
       )}
+      <AddPatient open={openModal} close={toggleModal} />
     </Box>
   );
 }
