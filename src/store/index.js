@@ -1,3 +1,5 @@
+const reqUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export const getAllDepartments = async () => {
   try {
     const response = await fetch(
@@ -137,7 +139,7 @@ export const createPatient = async (query) => {
     phone_number,
   } = query;
   try {
-    const response = await fetch("public/registration", {
+    const response = await fetch(`${reqUrl}public/registration`, {
       method: "POST",
       body: JSON.stringify({
         surname,
