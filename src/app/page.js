@@ -192,7 +192,9 @@ export default function Form() {
         boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
       }}
     >
-      <Typography variant="h5">Book An Appointment</Typography>
+      <Typography variant="h5" sx={{ fontSize: "2rem", fontWeight: "400" }}>
+        Book An Appointment
+      </Typography>
       {loading ? (
         <Loading />
       ) : (
@@ -324,7 +326,7 @@ export default function Form() {
                     <TextField
                       type="time"
                       value={value}
-                      sx={{ mr: 3, width: "37%" }}
+                      sx={{ mr: 4, width: "37%" }}
                       // label="Time"
                       required
                       onChange={onChange}
@@ -353,8 +355,10 @@ export default function Form() {
                         <TextField
                           label="Date"
                           required
+                          sx={{
+                            minWidth: { xs: "100%", lg: 240 },
+                          }}
                           value={value}
-                          sx={{ width: "100%" }}
                           onChange={onChange}
                           error={Boolean(errors.appointmentDate)}
                           {...(errors.appointmentDate && {

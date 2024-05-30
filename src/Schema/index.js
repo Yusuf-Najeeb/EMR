@@ -13,10 +13,10 @@ export const appointmentBookingSchema = yup.object().shape({
 
 export const newPatientSchema = yup.object().shape({
   surname: yup.string().required("Surname is required"),
-  otherNames: yup.string().required("otherNames are required"),
+  other_names: yup.string().required("otherNames are required"),
   email: yup.string().email().required("email is required"),
-  phoneNumber: yup.number().min(11).required("Phone number required"),
+  phone_number: yup.number().min(11).required("Phone number required"),
   gender: yup.string().required("Gender is required"),
-  dob: yup.string().required("Date of Birth is required"),
+  date_of_birth: yup.string().required("Date of Birth is required"),
   address: yup.string().required("Address is required"),
 });

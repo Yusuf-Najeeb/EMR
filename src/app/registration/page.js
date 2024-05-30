@@ -20,6 +20,7 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { newPatientSchema } from "@/Schema";
 import { formatDateToYYYMMDDD } from "../../utils/format";
+import { createPatient } from "@/store";
 
 import { patientName } from "@/utils/utils";
 import Loading from "../../components/Loading";
@@ -31,11 +32,11 @@ const Registration = () => {
 
   const defaultValues = {
     surname: "",
-    otherNames: "",
+    other_names: "",
     email: "",
-    phoneNumber: "",
+    phone_number: "",
     gender: "",
-    dob: "",
+    date_of_birth: "",
     address: "",
   };
 
@@ -50,13 +51,23 @@ const Registration = () => {
     resolver: yupResolver(newPatientSchema),
   });
 
-  const handleDate = (date) => {
-    const formatDate = formatDateToYYYMMDDD(date);
-    setDate(formatDate);
-  };
+  //   const handleDate = (date) => {
+  //     const formatDate = formatDateToYYYMMDDD(date);
+  //     setDate(formatDate);
+  //   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const response = await createPatient(data);
+      console.log(data, "Payload received successfully");
+      console.log(response);
+      reset();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
   };
   return (
     <Box sx={{ display: "flex", alignItems: "start", gap: { xs: 0, md: 10 } }}>
@@ -67,11 +78,14 @@ const Registration = () => {
           borderBottomRightRadius: 5,
           p: { xs: 3, md: 6 },
           boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
-          mt: 15,
+          my: 5,
+          mx: "auto",
           background: "white",
         }}
       >
-        <Typography variant="h5">Create New Patient</Typography>
+        <Typography variant="h5" sx={{ fontSize: "2rem", fontWeight: "400" }}>
+          Create New Patient
+        </Typography>
         {loading ? (
           <Loading />
         ) : (
@@ -102,7 +116,7 @@ const Registration = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <Controller
-                    name="otherNames"
+                    name="other_names"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -114,8 +128,8 @@ const Registration = () => {
                         value={value}
                         onChange={onChange}
                         required
-                        error={Boolean(errors?.otherNames)}
-                        {...(errors?.otherNames && {
+                        error={Boolean(errors?.other_names)}
+                        {...(errors?.other_names && {
                           helperText: "Enter your other names is required",
                         })}
                       />
@@ -148,7 +162,7 @@ const Registration = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <Controller
-                    name="phoneNumber"
+                    name="phone_number"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -159,8 +173,8 @@ const Registration = () => {
                         placeholder="+234-80-0000-0000"
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors?.phoneNumber)}
-                        {...(errors?.phoneNumber && {
+                        error={Boolean(errors?.phone_number)}
+                        {...(errors?.phone_number && {
                           helperText: "Phone number is required",
                         })}
                       />
@@ -199,7 +213,7 @@ const Registration = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                   <Controller
-                    name="dob"
+                    name="date_of_birth"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -209,21 +223,21 @@ const Registration = () => {
                         popperPlacement="bottom-end"
                         showYearDropdown
                         showMonthDropdown
-                        onChange={(e) => handleDate(e)}
+                        onChange={(e) => onChange(e)}
                         placeholderText="2022-05-07"
                         customInput={
                           <TextField
                             fullWidth
                             sx={{
                               width: "100%",
-                              minWidth: { xs: 595, lg: 294 },
+                              minWidth: { xs: 595, lg: 393 },
                             }}
                             label="Date of Birth"
                             required
                             value={value}
                             onChange={onChange}
-                            error={Boolean(errors?.dob)}
-                            {...(errors?.dob && {
+                            error={Boolean(errors?.date_of_birth)}
+                            {...(errors?.date_of_birth && {
                               helperText: "Date of birth is required",
                             })}
                           />
@@ -291,7 +305,7 @@ const Registration = () => {
           </Box>
         )}
       </Box>
-      <Box sx={{ mt: 5, display: { xs: "none", md: "block" } }}>
+      <Box sx={{ mt: 5, display: { xs: "none", md: "none" } }}>
         <img
           loading="lazy"
           decoding="async"

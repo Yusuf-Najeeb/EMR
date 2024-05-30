@@ -125,3 +125,40 @@ export const bookAppointment = async (query) => {
     console.log(err);
   }
 };
+
+export const createPatient = async (query) => {
+  const {
+    surname,
+    other_names,
+    email,
+    date_of_birth,
+    gender,
+    address,
+    phone_number,
+  } = query;
+  try {
+    const response = await fetch("public/registration", {
+      method: "POST",
+      body: JSON.stringify({
+        surname,
+        other_names,
+        date_of_birth,
+        email,
+        phone_number,
+        gender,
+        address,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+    if (!response.ok)
+      throw new Error("Error creating patient", response.status);
+    const data = await response.json();
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
