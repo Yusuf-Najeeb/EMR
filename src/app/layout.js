@@ -356,7 +356,9 @@ export default function RootLayout({ children }) {
       {/* <body className={inter.className}> */}
       <body className="page-template page-template-elementor_header_footer page page-id-6680 wp-embed-responsive theme-medilink woocommerce-no-js rtsb-shopbuilder-plugin rtsb_theme_medilink woocommerce non-stick header-style-1 non-trheader carton no-sidebar product-grid-view elementor-default elementor-template-full-width elementor-kit-3000 elementor-page elementor-page-6680">
         <Header />
-        <div style={{ padding: "20px", overflow: "hidden" }}>{children}</div>
+        <div style={{ overflow: "hidden", backgroundColor: "#f1f7fa" }}>
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

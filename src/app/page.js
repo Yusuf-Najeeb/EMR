@@ -439,8 +439,9 @@ export default function Form() {
                   "&:hover": {
                     background: "#23A455",
                   },
-                  fontSize: "15px",
-                  p: 2,
+                  fontSize: "12px",
+                  px: 3,
+                  py: 1,
                 }}
                 type="submit"
                 variant="contained"

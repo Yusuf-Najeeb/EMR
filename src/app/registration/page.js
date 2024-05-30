@@ -20,26 +20,14 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { newPatientSchema } from "@/Schema";
 import { formatDateToYYYMMDDD } from "../../utils/format";
-import {
-  getAllDepartments,
-  getAllServices,
-  getPatients,
-  getAvailableDoctors,
-  bookAppointment,
-} from "@/store";
+
 import { patientName } from "@/utils/utils";
 import Loading from "../../components/Loading";
-
-// ** fake-db
-const patients = [];
-const departments = [];
-const services = [];
-const doctors = [];
 
 const Registration = () => {
   // ** States
   const [loading, setLoading] = useState(false);
-  const [verifyPatient, setVerifyPatient] = useState(false);
+  const [date, setDate] = useState("");
 
   const defaultValues = {
     surname: "",
@@ -62,18 +50,25 @@ const Registration = () => {
     resolver: yupResolver(newPatientSchema),
   });
 
-  const handleData = () => {
-    console.log("nothing");
+  const handleDate = (date) => {
+    const formatDate = formatDateToYYYMMDDD(date);
+    setDate(formatDate);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", alignItems: "start", gap: { xs: 0, md: 10 } }}>
       <Box
         sx={{
-          width: { xs: "95%", md: "75%" },
-          mx: "auto",
-          borderRadius: 2,
+          width: { xs: "100%", md: "70%" },
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
           p: { xs: 3, md: 6 },
           boxShadow: "rgba(0, 24, 78, 0.25) 0px 5px 15px",
+          mt: 15,
+          background: "white",
         }}
       >
         <Typography variant="h5">Create New Patient</Typography>
@@ -81,7 +76,7 @@ const Registration = () => {
           <Loading />
         ) : (
           <Box>
-            <form onSubmit={handleSubmit(handleData)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={6} sx={{ py: 2 }}>
                 <Grid item xs={12} sm={12} md={6}>
                   <Controller
@@ -147,14 +142,7 @@ const Registration = () => {
                         {...(errors?.email && {
                           helperText: "Email address is required",
                         })}
-                      >
-                        <MenuItem>Select Department</MenuItem>
-                        {departments?.map((department) => (
-                          <MenuItem key={department?.id} value={department?.id}>
-                            {department?.name}
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                      />
                     )}
                   />
                 </Grid>
@@ -216,17 +204,20 @@ const Registration = () => {
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <DatePicker
-                        sx={{ width: "100%" }}
+                        sx={{ width: "100%", overflow: "hidden" }}
                         selected={value}
                         popperPlacement="bottom-end"
                         showYearDropdown
                         showMonthDropdown
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => handleDate(e)}
                         placeholderText="2022-05-07"
                         customInput={
                           <TextField
                             fullWidth
-                            sx={{ width: "100%", minWidth: 320 }}
+                            sx={{
+                              width: "100%",
+                              minWidth: { xs: 595, lg: 294 },
+                            }}
                             label="Date of Birth"
                             required
                             value={value}
@@ -281,8 +272,9 @@ const Registration = () => {
                     "&:hover": {
                       background: "#23A455",
                     },
-                    fontSize: "15px",
-                    p: 2,
+                    fontSize: "12px",
+                    px: 3,
+                    py: 1,
                   }}
                   type="submit"
                   variant="contained"
@@ -299,12 +291,12 @@ const Registration = () => {
           </Box>
         )}
       </Box>
-      <Box>
+      <Box sx={{ mt: 5, display: { xs: "none", md: "block" } }}>
         <img
           loading="lazy"
           decoding="async"
           width="683"
-          height="1000"
+          height="300"
           src="https://dedahospital.com/newsite/wp-content/uploads/2018/11/figure2.png"
           class="attachment-full size-full wp-image-714"
           alt="Doctor posing with lab-coat"
