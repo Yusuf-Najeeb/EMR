@@ -18,5 +18,12 @@ export const newPatientSchema = yup.object().shape({
   phone_number: yup.number().min(11).required("Phone number required"),
   gender: yup.string().required("Gender is required"),
   date_of_birth: yup.string().required("Date of Birth is required"),
-  address: yup.string().required("Address is required"),
+  nationality: yup.string().required("Nationality is required"),
+  country_of_residence: yup.string().required("Resident country is required"),
+  serviceId: yup.string().required("Select a staff"),
+  appointmentDate: yup.string().required("Select a date"),
+  time: yup.string().required("Select a time"),
+  doctorId: yup.string().required("Select a doctor"),
+  departmentId: yup.string().required("Select a department"),
+  message: yup.string(),
 });
