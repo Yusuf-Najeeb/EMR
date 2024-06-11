@@ -254,20 +254,41 @@ const AddPatient = ({ open, close }) => {
               <Grid container spacing={6} sx={{ py: 2 }}>
                 <Grid item xs={12} sm={12}>
                   <Controller
-                    name="address"
+                    name="nationality"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <TextField
                         fullWidth
-                        label="Address"
+                        label="Nationality"
                         required
-                        placeholder="Enter your Address"
+                        placeholder="Enter your Nationality"
                         value={value}
                         onChange={onChange}
                         error={Boolean(errors?.address)}
                         {...(errors?.address && {
-                          helperText: "Address is required",
+                          helperText: "Nationality is required",
+                        })}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <Controller
+                    name="countryOfResidence"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <TextField
+                        fullWidth
+                        label="Country of Residence"
+                        required
+                        placeholder="Country you currently live"
+                        value={value}
+                        onChange={onChange}
+                        error={Boolean(errors?.address)}
+                        {...(errors?.address && {
+                          helperText: "Resident Country required",
                         })}
                       />
                     )}

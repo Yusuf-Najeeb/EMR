@@ -9,6 +9,8 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   padding: 0 !important;
+  font-size: 1rem !important;
+  color: #222;
 }
 
 .banner {
@@ -23,6 +25,41 @@ button:hover {
 }
 li:hover {
   background-color: "#23A455";
+}
+
+#datePicker,
+#datePicker > div.react-datepicker-wrapper,
+#datePicker > div > div.react-datepicker__input-container,
+#datePicker > div > div.react-datepicker__input-container input {
+  width: 100% !important;
+}
+
+#date_picker,
+#date_picker > .react-datepicker-wrapper,
+#date_picker > .react-datepicker-wrapper > .react-datepicker__input-container,
+#date_picker
+  > .react-datepicker-wrapper
+  > .react-datepicker__input-container
+  > div,
+#date_picker
+  > .react-datepicker-wrapper
+  > .react-datepicker__input-container
+  > div
+  > div,
+#date_picker
+  > .react-datepicker-wrapper
+  > .react-datepicker__input-container
+  > div
+  > div
+  > input {
+  width: 100%;
+}
+
+#timer,
+#timer > div,
+#timer > div > div,
+#timer > div > div > input {
+  width: 100%;
 }
 
 /* :root {
