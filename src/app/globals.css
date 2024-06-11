@@ -9,8 +9,8 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   padding: 0 !important;
-  font-size: 1rem !important;
-  color: #222;
+  font-size: 0.9rem !important;
+  color: #111 !important;
 }
 
 .banner {

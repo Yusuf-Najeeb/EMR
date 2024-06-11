@@ -79,6 +79,7 @@ export default function Form() {
     const defaultValues = existingPatient
       ? appointment
       : registrationAppointment;
+
     const schema = existingPatient
       ? appointmentBookingSchema
       : newPatientSchema;
@@ -100,10 +101,6 @@ export default function Form() {
     resolver: yupResolver(schema),
   });
 
-  const handleCheck = () => {
-    setExistingPatient(!existingPatient);
-    reset(defaultValues);
-  };
   const doctor = [
     { id: 1, name: "Dr Palmer", value: "Dr. Palmer", label: "Dr. Palmer" },
     { id: 2, name: "Dr Winfred", value: "Dr. Winfred", label: "Dr. Winfred" },
@@ -116,10 +113,8 @@ export default function Form() {
   const formatDate = formatDateToYYYMMDDD(getDate);
   const getDepartment = useWatch({ control, name: "departmentId" });
 
-  const handleAppointment = (data) => {
+  const handleData = (data) => {
     console.log(data);
-    reset(defaultValues);
-
     // const { appointmentDate, time, departmentId, ...restOfData } = data;
     // const formattedDate = formatDateToYYYMMDDD(appointmentDate);
     // const payload = {
@@ -139,7 +134,7 @@ export default function Form() {
       const FinalResponse = await bookAppointment(payload);
       console.log(data, "Payload received successfully");
       console.log(FinalResponse);
-      reset();
+      reset(defaultValues);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -224,6 +219,17 @@ export default function Form() {
     FetchDoctors();
   }, [date, time, selectedDepartmentId]);
 
+  useEffect(() => {
+    setTime(getTime);
+    setSelectedDepartmentId(getDepartment);
+    setDate(formatDate);
+  }, [formatDate, getTime, getDepartment]);
+
+  const handleCheck = () => {
+    setExistingPatient(!existingPatient);
+    reset(defaultValues);
+  };
+
   return (
     <Box
       sx={{
@@ -254,7 +260,7 @@ export default function Form() {
         <Loading />
       ) : (
         <Box>
-          <form onSubmit={handleSubmit(handleAppointment)}>
+          <form onSubmit={handleSubmit(handleData)}>
             <>
               {existingPatient ? (
                 <Collapse in={existingPatient} sx={{ minWidth: "100%" }}>
