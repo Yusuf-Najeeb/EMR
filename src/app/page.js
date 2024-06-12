@@ -32,6 +32,34 @@ import {
 import { patientName } from "@/utils/utils";
 import Loading from "../components/Loading";
 
+const appointment = {
+  patientId: "",
+  departmentId: "",
+  serviceId: "",
+  doctorId: "",
+  appointmentDate: "",
+  time: "",
+  message: "",
+  verifyPatient: "",
+};
+
+const registration = {
+  surname: "",
+  other_names: "",
+  email: "",
+  phone_number: "",
+  gender: "",
+  date_of_birth: "",
+  nationality: "",
+  country_of_residence: "",
+  departmentId: "",
+  serviceId: "",
+  doctorId: "",
+  appointmentDate: "",
+  time: "",
+  message: "",
+};
+
 export default function Form() {
   const [loading, setLoading] = useState(false);
   const [departments, setDepartment] = useState([]);
@@ -47,45 +75,14 @@ export default function Form() {
   const [defaultValues, setDefaultValue] = useState(null);
   const [schema, setSchema] = useState(null);
 
-  const appointment = {
-    patientId: "",
-    departmentId: "",
-    serviceId: "",
-    doctorId: "",
-    appointmentDate: "",
-    time: "",
-    message: "",
-    verifyPatient: "",
-  };
-
-  const registrationAppointment = {
-    surname: "",
-    other_names: "",
-    email: "",
-    phone_number: "",
-    gender: "",
-    date_of_birth: "",
-    nationality: "",
-    country_of_residence: "",
-    departmentId: "",
-    serviceId: "",
-    doctorId: "",
-    appointmentDate: "",
-    time: "",
-    message: "",
-  };
-
   useEffect(() => {
-    const defaultValues = existingPatient
-      ? appointment
-      : registrationAppointment;
-
-    const schema = existingPatient
-      ? appointmentBookingSchema
-      : newPatientSchema;
-
-    setDefaultValue(defaultValues);
-    setSchema(schema);
+    if (existingPatient) {
+      setSchema(appointmentBookingSchema);
+      setDefaultValue(appointment);
+    } else {
+      setSchema(newPatientSchema);
+      setDefaultValue(registration);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingPatient]);
@@ -261,8 +258,8 @@ export default function Form() {
       ) : (
         <Box>
           <form onSubmit={handleSubmit(handleData)}>
-            <>
-              {existingPatient ? (
+            <Grid>
+              {existingPatient && (
                 <Collapse in={existingPatient} sx={{ minWidth: "100%" }}>
                   <Grid container spacing={4} sx={{ py: 2 }}>
                     <Grid item xs={12} sm={12} md={6}>
@@ -319,7 +316,11 @@ export default function Form() {
                     </Grid>
                   </Grid>
                 </Collapse>
-              ) : (
+              )}
+            </Grid>
+
+            <Grid>
+              {!existingPatient && (
                 <Collapse in={!existingPatient}>
                   <Grid container spacing={4} sx={{ py: 2 }}>
                     <Grid item xs={12} sm={12} md={4}>
@@ -516,7 +517,15 @@ export default function Form() {
                   </Grid>
                 </Collapse>
               )}
-            </>
+            </Grid>
+
+            {/* <>
+              {existingPatient ? (
+                
+              ) : (
+                
+              )}
+            </> */}
 
             <Grid container spacing={4} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
