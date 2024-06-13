@@ -111,21 +111,39 @@ export default function Form() {
   const getDepartment = useWatch({ control, name: "departmentId" });
 
   const handleData = (data) => {
-    console.log(data);
-    // const { appointmentDate, time, departmentId, ...restOfData } = data;
-    // const formattedDate = formatDateToYYYMMDDD(appointmentDate);
-    // const payload = {
-    //   date: formattedDate,
-    //   time,
-    //   departmentId: departmentId,
-    //   ...restOfData,
-    // };
-    // if (payload) {
-    //   onSubmit(payload);
-    // }
+    const filterData = (data) => {
+      const filteredData = {};
+
+      for (const key in data) {
+        if (data[key] !== "" && data[key] !== null && data[key] !== undefined) {
+          filteredData[key] = data[key];
+        }
+      }
+
+      return filteredData;
+    };
+
+    const payload = filterData(data);
+
+    if (existingPatient && payload) {
+      sendAppointment(payload);
+    }
+
+    if (!existingPatient && payload) {
+      newPatientBooking(payload);
+    }
   };
 
-  const onSubmit = async (payload) => {
+  const sendAppointment = async (data) => {
+    const { appointmentDate, time, departmentId, ...restOfData } = data;
+
+    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
+    const payload = {
+      date: formattedDate,
+      time,
+      departmentId: departmentId,
+      ...restOfData,
+    };
     try {
       setLoading(true);
       const FinalResponse = await bookAppointment(payload);
@@ -137,6 +155,26 @@ export default function Form() {
       setLoading(false);
       console.log(error?.message || "error occurred!");
     }
+  };
+
+  const newPatientBooking = (data) => {
+    const {
+      appointmentDate,
+      time,
+      departmentId,
+      date_of_birth,
+      ...restOfData
+    } = data;
+
+    const formattedDate = formatDateToYYYMMDDD(appointmentDate);
+    const formatDOB = formatDateToYYYMMDDD(date_of_birth);
+    const payload = {
+      date: formattedDate,
+      date_of_birth: formatDOB,
+      time,
+      departmentId: departmentId,
+      ...restOfData,
+    };
   };
 
   useEffect(() => {
@@ -518,7 +556,6 @@ export default function Form() {
                 </Collapse>
               )}
             </Grid>
-
             {/* <>
               {existingPatient ? (
                 
