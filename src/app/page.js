@@ -21,7 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { appointmentBookingSchema, newPatientSchema } from "@/Schema";
-import { formatDateToYYYMMDDD } from "../utils/format";
+import { formatDateToYYYMMDDD, formatFirstLetter } from "../utils/format";
 import {
   getAllDepartments,
   getAllServices,
@@ -175,6 +175,8 @@ export default function Form() {
       date_of_birth: formatDOB,
       time,
       departmentId: departmentId,
+      patient_id: "",
+      verifyPatient: "",
       ...restOfData,
     };
 
@@ -744,7 +746,9 @@ export default function Form() {
                       )}
                       {doctors?.map((doctor) => (
                         <MenuItem key={doctor.id} value={doctor.id}>
-                          {`${doctor?.first_name} ${doctor?.last_name}`}
+                          {`${formatFirstLetter(
+                            doctor?.first_name
+                          )} ${formatFirstLetter(doctor?.last_name)}`}
                         </MenuItem>
                       ))}
                     </TextField>
