@@ -3,7 +3,7 @@ const reqUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const getAllDepartments = async () => {
   try {
     const response = await fetch(
-      "https://immortal-lab-key.ngrok-free.app/public/has-appointment/departments",
+      `${reqUrl}public/has-appointment/departments`,
       {
         method: "GET",
         headers: {
@@ -22,17 +22,14 @@ export const getAllDepartments = async () => {
 
 export const getAllServices = async (department_id) => {
   try {
-    const response = await fetch(
-      "https://immortal-lab-key.ngrok-free.app/public/consultancy/services",
-      {
-        method: "POST",
-        body: JSON.stringify({ department_id }),
-        headers: {
-          "Content-type": "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
+    const response = await fetch(`${reqUrl}public/consultancy/services`, {
+      method: "POST",
+      body: JSON.stringify({ department_id }),
+      headers: {
+        "Content-type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
     const data = await response.json();
 
     return data;
@@ -43,17 +40,14 @@ export const getAllServices = async (department_id) => {
 
 export const getPatients = async (key) => {
   try {
-    const response = await fetch(
-      "https://immortal-lab-key.ngrok-free.app/public/verify-patient/details",
-      {
-        method: "POST",
-        body: JSON.stringify({ key }),
-        headers: {
-          "Content-type": "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
+    const response = await fetch(`${reqUrl}public/verify-patient/details`, {
+      method: "POST",
+      body: JSON.stringify({ key }),
+      headers: {
+        "Content-type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -63,21 +57,18 @@ export const getPatients = async (key) => {
 
 export const getAvailableDoctors = async (departmentId, time, date) => {
   try {
-    const response = await fetch(
-      "https://immortal-lab-key.ngrok-free.app/public/check-availability",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          date,
-          hour: time,
-          departmentId,
-        }),
-        headers: {
-          "Content-type": "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
+    const response = await fetch(`${reqUrl}public/check-availability`, {
+      method: "POST",
+      body: JSON.stringify({
+        date,
+        hour: time,
+        departmentId,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
     if (!response.ok)
       throw new Error("Error fetching doctors", response.status);
     const data = await response.json();
@@ -130,25 +121,25 @@ export const bookAppointment = async (query) => {
 
 export const createPatient = async (query) => {
   const {
-    surname,
-    other_names,
-    email,
-    date_of_birth,
-    gender,
-    address,
-    phone_number,
+    departmentId,
+    serviceId,
+    patientId,
+    doctorId,
+    date,
+    time,
+    ...restOfData
   } = query;
   try {
-    const response = await fetch(`${reqUrl}public/registration`, {
+    const response = await fetch(`${reqUrl}public/bookings/new`, {
       method: "POST",
       body: JSON.stringify({
-        surname,
-        other_names,
-        date_of_birth,
-        email,
-        phone_number,
-        gender,
-        address,
+        isAdvanced: true,
+        department_id: departmentId,
+        service_id: serviceId,
+        patient_id: patientId,
+        doctor_id: doctorId,
+        appointment_date: `${date} ${time}`,
+        ...restOfData,
       }),
       headers: {
         "Content-type": "application/json",

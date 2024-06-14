@@ -28,6 +28,7 @@ import {
   getPatients,
   getAvailableDoctors,
   bookAppointment,
+  createPatient,
 } from "@/store";
 import { patientName } from "@/utils/utils";
 import Loading from "../components/Loading";
@@ -50,6 +51,7 @@ const registration = {
   phone_number: "",
   gender: "",
   date_of_birth: "",
+  address: "",
   nationality: "",
   country_of_residence: "",
   departmentId: "",
@@ -100,7 +102,7 @@ export default function Form() {
 
   const doctor = [
     { id: 1, name: "Dr Palmer", value: "Dr. Palmer", label: "Dr. Palmer" },
-    { id: 2, name: "Dr Winfred", value: "Dr. Winfred", label: "Dr. Winfred" },
+    { id: 2, name: "Dr Winfred", value: 18, label: "Dr. Winfred" },
     { id: 3, name: "Dr Rose", value: "Dr. Rose", label: "Dr. Rose" },
     { id: 4, name: "Dr Paul", value: "Dr. Paul", label: "Dr. Paul" },
   ];
@@ -146,7 +148,7 @@ export default function Form() {
     };
     try {
       setLoading(true);
-      const FinalResponse = await bookAppointment(payload);
+      const FinalResponse = await createPatient(payload);
       console.log(data, "Payload received successfully");
       console.log(FinalResponse);
       reset(defaultValues);
@@ -157,7 +159,7 @@ export default function Form() {
     }
   };
 
-  const newPatientBooking = (data) => {
+  const newPatientBooking = async (data) => {
     const {
       appointmentDate,
       time,
@@ -175,6 +177,18 @@ export default function Form() {
       departmentId: departmentId,
       ...restOfData,
     };
+
+    try {
+      setLoading(true);
+      const FinalResponse = await createPatient(payload);
+      console.log(data, "Payload received successfully");
+      console.log(FinalResponse);
+      reset(defaultValues);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error?.message || "error occurred!");
+    }
   };
 
   useEffect(() => {
@@ -247,7 +261,7 @@ export default function Form() {
       }
     };
     const FetchDoctors = async () => {
-      if (date && time && selectedDepartmentId) {
+      if (date !== "" && time !== "" && selectedDepartmentId !== "") {
         getDoctor(selectedDepartmentId, time, date);
       }
     };
@@ -510,7 +524,29 @@ export default function Form() {
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
+                      <Controller
+                        name="address"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { value, onChange } }) => (
+                          <TextField
+                            fullWidth
+                            label="Address"
+                            required
+                            placeholder="Enter your address"
+                            value={value}
+                            onChange={onChange}
+                            error={Boolean(errors?.address)}
+                            {...(errors?.address && {
+                              helperText: "Address is required",
+                            })}
+                          />
+                        )}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={4}>
                       <Controller
                         name="nationality"
                         control={control}
@@ -523,15 +559,16 @@ export default function Form() {
                             placeholder="Enter your Nationality"
                             value={value}
                             onChange={onChange}
-                            error={Boolean(errors?.address)}
-                            {...(errors?.address && {
+                            error={Boolean(errors?.nationality)}
+                            {...(errors?.nationality && {
                               helperText: "Nationality is required",
                             })}
                           />
                         )}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+
+                    <Grid item xs={12} sm={4}>
                       <Controller
                         name="country_of_residence"
                         control={control}
@@ -556,13 +593,6 @@ export default function Form() {
                 </Collapse>
               )}
             </Grid>
-            {/* <>
-              {existingPatient ? (
-                
-              ) : (
-                
-              )}
-            </> */}
 
             <Grid container spacing={4} sx={{ py: 2 }}>
               <Grid item xs={12} sm={12} md={6}>
@@ -707,14 +737,14 @@ export default function Form() {
                         helperText: "Please select a doctor",
                       })}
                     >
-                      {doctor.length === 0 ? (
+                      {doctors?.length < 1 ? (
                         <MenuItem>No doctors found</MenuItem>
                       ) : (
-                        <MenuItem>Select Staff</MenuItem>
+                        <MenuItem>Select Doctor</MenuItem>
                       )}
-                      {doctor?.map((doctor) => (
-                        <MenuItem key={doctor.id} value={doctor.value}>
-                          {doctor.label}
+                      {doctors?.map((doctor) => (
+                        <MenuItem key={doctor.id} value={doctor.id}>
+                          {`${doctor?.first_name} ${doctor?.last_name}`}
                         </MenuItem>
                       ))}
                     </TextField>
