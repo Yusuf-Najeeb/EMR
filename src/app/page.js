@@ -100,13 +100,6 @@ export default function Form() {
     resolver: yupResolver(schema),
   });
 
-  const doctor = [
-    { id: 1, name: "Dr Palmer", value: "Dr. Palmer", label: "Dr. Palmer" },
-    { id: 2, name: "Dr Winfred", value: 18, label: "Dr. Winfred" },
-    { id: 3, name: "Dr Rose", value: "Dr. Rose", label: "Dr. Rose" },
-    { id: 4, name: "Dr Paul", value: "Dr. Paul", label: "Dr. Paul" },
-  ];
-
   const getTime = useWatch({ control, name: "time" });
   const getDate = useWatch({ control, name: "appointmentDate" });
   const formatDate = formatDateToYYYMMDDD(getDate);
