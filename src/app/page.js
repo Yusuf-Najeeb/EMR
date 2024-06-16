@@ -162,14 +162,12 @@ export default function Form() {
     } = data;
 
     const formattedDate = formatDateToYYYMMDDD(appointmentDate);
-    const formatDOB = formatDateToYYYMMDDD(date_of_birth);
+    const formattedDOB = formatDateToYYYMMDDD(date_of_birth);
     const payload = {
       date: formattedDate,
-      date_of_birth: formatDOB,
+      date_of_birth: formattedDOB,
       time,
       departmentId: departmentId,
-      patient_id: "",
-      verifyPatient: "",
       ...restOfData,
     };
 
