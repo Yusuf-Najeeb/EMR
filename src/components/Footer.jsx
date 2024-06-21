@@ -1,5 +1,7 @@
 import React from "react";
-import { FaLocationDot } from "react-icons/fa6";
+import { CiLocationOn } from "react-icons/ci";
+import { CiMail } from "react-icons/ci";
+import { MdOutlinePhoneInTalk } from "react-icons/md";
 
 const Footer = () => {
   return (
@@ -268,25 +270,22 @@ const Footer = () => {
                         className="fas fa-map-marker-alt"
                         aria-hidden="true"
                       ></i> */}
-                      {/* <i class="fa-solid fa-location-dot"></i>
-                       */}
-                      <FaLocationDot />
+                      <CiLocationOn className="icon" />
                       <div className="fax-text">
                         Plot 1847, B07 Cadastral Zone, Behind ABC Cargo,
-                        Katampe, Abuja, Nigeria{" "}
+                        Katampe, Abuja, Nigeria.
                       </div>
                     </li>
                     <li className="no-image">
                       {/* <i className="fas fa-phone" aria-hidden="true"></i> */}
-                      <i class="fa-solid fa-phone-volume"></i>
-
+                      <MdOutlinePhoneInTalk className="icon" />
                       <a href="tel:07000013332, 08184227707">
                         07000013332, 08184227707{" "}
                       </a>
                     </li>
                     <li className="no-image">
                       {/* <i className="far fa-envelope" aria-hidden="true"></i> */}
-                      <i class="fa-solid fa-envelope-open-text"></i>
+                      <CiMail className="icon" />
                       <div className="fax-text">
                         <a href="mailto:info@dedahospital.com">
                           info@dedahospital.com
