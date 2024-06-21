@@ -11,6 +11,17 @@ body {
   padding: 0 !important;
   font-size: 0.9rem !important;
   color: #111 !important;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #4ba856;
 }
 
 .banner {
@@ -60,6 +71,48 @@ li:hover {
 #timer > div > div,
 #timer > div > div > input {
   width: 100%;
+}
+.site-header
+  .main-navigation
+  ul
+  li
+  ul.sub-menu
+  li.menu-item-has-children:after {
+  color: #4ba856b8 !important;
+  content: "▶" !important;
+  font-family: FontAwesome;
+  font-weight: bolder;
+  font-size: 4rem;
+  position: absolute;
+  right: 26px;
+  top: 8px;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked,
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+  color: #4ba856;
+}
+
+MuiInputBase-root:focus,
+.MuiOutlinedInput-root:focus,
+.MuiInputBase-colorPrimary:focus,
+.MuiInputBase-formControl:focus,
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root:focus {
+  outline: 1px solid #4ba856;
+}
+
+.MuiInputBase-input,
+.MuiOutlinedInput-input,
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input input {
+  color: #111;
+}
+
+#link:hover {
+  color: #4ba856 !important;
+}
+
+div.footer-header::after {
+  background: #4ba856 !important;
 }
 
 /* :root {

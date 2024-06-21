@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
+import { styled } from "@mui/material/styles";
 
 //** Third-Party Imports
 import DatePicker from "react-datepicker";
@@ -61,6 +62,18 @@ const registration = {
   time: "",
   message: "",
 };
+
+const InputField = styled(TextField)`
+  & label.Mui-focused {
+    color: #111;
+  }
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: #4ba856;
+      border-width: 1px;
+    }
+  }
+`;
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
@@ -296,7 +309,11 @@ export default function Form() {
       </Typography>
       <Typography>
         Do you have a Patient ID?
-        <Checkbox checked={existingPatient} onChange={handleCheck} />
+        <Checkbox
+          id="checkbox"
+          checked={existingPatient}
+          onChange={handleCheck}
+        />
       </Typography>
       {loading ? (
         <Loading />
@@ -313,7 +330,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Patient ID"
                             placeholder="Enter Email/Phone/User-ID"
@@ -335,7 +352,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             select
                             disabled={!verifyPatient}
@@ -355,7 +372,7 @@ export default function Form() {
                                 {patientName(patient, true)}
                               </MenuItem>
                             ))}
-                          </TextField>
+                          </InputField>
                         )}
                       />
                     </Grid>
@@ -374,7 +391,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Surname"
                             placeholder="John"
@@ -395,7 +412,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Other Names"
                             placeholder="John Doe"
@@ -417,7 +434,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Email"
                             required
@@ -439,7 +456,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Phone Number"
                             required
@@ -461,7 +478,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             value={value}
                             label="Gender"
                             select
@@ -477,7 +494,7 @@ export default function Form() {
                             <MenuItem value="">Choose your Gender</MenuItem>
                             <MenuItem value="male">Male</MenuItem>
                             <MenuItem value="female">Female</MenuItem>
-                          </TextField>
+                          </InputField>
                         )}
                       />
                     </Grid>
@@ -496,7 +513,7 @@ export default function Form() {
                             onChange={(e) => onChange(e)}
                             placeholderText="2022-05-07"
                             customInput={
-                              <TextField
+                              <InputField
                                 fullWidth
                                 sx={{
                                   width: "100%",
@@ -523,7 +540,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Address"
                             required
@@ -545,7 +562,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Nationality"
                             required
@@ -567,7 +584,7 @@ export default function Form() {
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { value, onChange } }) => (
-                          <TextField
+                          <InputField
                             fullWidth
                             label="Country of Residence"
                             required
@@ -594,7 +611,7 @@ export default function Form() {
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
-                    <TextField
+                    <InputField
                       fullWidth
                       label="Department"
                       required
@@ -613,7 +630,7 @@ export default function Form() {
                           {department?.name}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </InputField>
                   )}
                 />
               </Grid>
@@ -623,7 +640,7 @@ export default function Form() {
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
-                    <TextField
+                    <InputField
                       fullWidth
                       select
                       label="Services"
@@ -642,7 +659,7 @@ export default function Form() {
                           {service?.name}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </InputField>
                   )}
                 />
               </Grid>
@@ -666,7 +683,7 @@ export default function Form() {
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
-                      <TextField
+                      <InputField
                         type="time"
                         value={value}
                         required
@@ -695,7 +712,7 @@ export default function Form() {
                         onChange={(e) => onChange(e)}
                         placeholderText="2022-05-07"
                         customInput={
-                          <TextField
+                          <InputField
                             label="Date"
                             required
                             value={value}
@@ -717,7 +734,7 @@ export default function Form() {
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
-                    <TextField
+                    <InputField
                       fullWidth
                       select
                       label="Doctor"
@@ -742,7 +759,7 @@ export default function Form() {
                           )} ${formatFirstLetter(doctor?.last_name)}`}
                         </MenuItem>
                       ))}
-                    </TextField>
+                    </InputField>
                   )}
                 />
               </Grid>
@@ -755,7 +772,7 @@ export default function Form() {
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange } }) => (
-                    <TextField
+                    <InputField
                       fullWidth
                       multiline
                       rows={5}

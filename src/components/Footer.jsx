@@ -1,4 +1,5 @@
 import React from "react";
+import { FaLocationDot } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -11,22 +12,22 @@ const Footer = () => {
                 <ul>
                   <li>Follow Us</li>
                   <li>
-                    <a target="_blank" href="#">
+                    <a id="link" target="_blank" href="#">
                       <i className="fa fa-facebook-f"></i>
                     </a>
                   </li>
                   <li>
-                    <a target="_blank" href="#">
-                      <i className="fa fa-x-twitter"></i>
+                    <a id="link" target="_blank" href="#">
+                      <i className="fa- fa-x"></i>
                     </a>
                   </li>
                   <li>
-                    <a target="_blank" href="#">
-                      <i className="fa fa-linkedin-in"></i>
+                    <a id="link" target="_blank" href="#">
+                      <i className="fa fa-linkedin"></i>
                     </a>
                   </li>
                   <li>
-                    <a target="_blank" href="#">
+                    <a id="link" target="_blank" href="#">
                       <i className="fa fa-instagram"></i>
                     </a>
                   </li>
@@ -263,25 +264,29 @@ const Footer = () => {
                 <div className="footer-contact-info">
                   <ul>
                     <li className="no-image">
-                      <i
+                      {/* <i
                         className="fas fa-map-marker-alt"
                         aria-hidden="true"
-                      ></i>
+                      ></i> */}
+                      {/* <i class="fa-solid fa-location-dot"></i>
+                       */}
+                      <FaLocationDot />
                       <div className="fax-text">
                         Plot 1847, B07 Cadastral Zone, Behind ABC Cargo,
                         Katampe, Abuja, Nigeria{" "}
                       </div>
                     </li>
                     <li className="no-image">
-                      <i className="fas fa-phone" aria-hidden="true"></i>
+                      {/* <i className="fas fa-phone" aria-hidden="true"></i> */}
+                      <i class="fa-solid fa-phone-volume"></i>
 
                       <a href="tel:07000013332, 08184227707">
                         07000013332, 08184227707{" "}
                       </a>
                     </li>
                     <li className="no-image">
-                      <i className="far fa-envelope" aria-hidden="true"></i>
-
+                      {/* <i className="far fa-envelope" aria-hidden="true"></i> */}
+                      <i class="fa-solid fa-envelope-open-text"></i>
                       <div className="fax-text">
                         <a href="mailto:info@dedahospital.com">
                           info@dedahospital.com

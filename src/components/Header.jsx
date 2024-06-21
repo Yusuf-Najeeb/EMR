@@ -1,4 +1,5 @@
 import React from "react";
+import "../app/page.module.css";
 
 const Header = () => {
   return (
@@ -323,7 +324,7 @@ const Header = () => {
         </div>
       </header>
 
-      <div className="rt-header-menu mean-container" id="meanmenu">
+      {/* <div className="mobile_menu rt-header-menu mean-container" id="mean-menu">
         <div className="mean-bar">
           <a href="https://dedahospital.com/newsite/">
             <img
@@ -335,7 +336,7 @@ const Header = () => {
             />
           </a>
 
-          {/* <ul className="header-action-items">
+          <ul className="header-action-items">
             <li className="phone-has-btn">
               <a href="#" className="btn-fill color-yellow btn-header">
                 Appointment
@@ -350,10 +351,10 @@ const Header = () => {
                 </div>
               </div>
             </li>
-          </ul> */}
+          </ul>
 
           <span className="sidebarBtn ">
-            <span className="fa fa-bars"></span>
+            <i className="fa-solid fa-bars"></i>
           </span>
         </div>
 
@@ -524,7 +525,7 @@ const Header = () => {
             </nav>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div id="content" className="site-content">
         <div
