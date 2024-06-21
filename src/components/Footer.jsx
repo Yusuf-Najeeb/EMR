@@ -2,6 +2,12 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
 import { MdOutlinePhoneInTalk } from "react-icons/md";
+import {
+  BsFacebook,
+  BsTwitterX,
+  BsLinkedin,
+  BsInstagram,
+} from "react-icons/bs";
 
 const Footer = () => {
   return (
@@ -15,22 +21,27 @@ const Footer = () => {
                   <li>Follow Us</li>
                   <li>
                     <a id="link" target="_blank" href="#">
-                      <i className="fa fa-facebook-f"></i>
+                      {/* <i className="fa fa-facebook-f"></i> */}
+                      <BsFacebook />
                     </a>
                   </li>
                   <li>
                     <a id="link" target="_blank" href="#">
-                      <i className="fa- fa-x"></i>
+                      {/* <i className="fa- fa-x"></i>
+                       */}
+                      <BsTwitterX />
                     </a>
                   </li>
                   <li>
                     <a id="link" target="_blank" href="#">
-                      <i className="fa fa-linkedin"></i>
+                      {/* <i className="fa fa-linkedin"></i> */}
+                      <BsLinkedin />
                     </a>
                   </li>
                   <li>
                     <a id="link" target="_blank" href="#">
-                      <i className="fa fa-instagram"></i>
+                      {/* <i className="fa fa-instagram"></i> */}
+                      <BsInstagram />
                     </a>
                   </li>
                 </ul>
