@@ -2,8 +2,6 @@ import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhone } from "react-icons/fa6";
 import { FaEnvelope } from "react-icons/fa";
-
-import { CiMail } from "react-icons/ci";
 import { FaFacebookF } from "react-icons/fa6";
 import { BsTwitterX, BsLinkedin, BsInstagram } from "react-icons/bs";
 

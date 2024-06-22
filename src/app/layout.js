@@ -1,12 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -353,7 +348,6 @@ export default function RootLayout({ children }) {
           content="https://dedahospital.com/newsite/wp-content/uploads/2020/03/cropped-favicon-300x300.png"
         />
       </head>
-      {/* <body className={inter.className}> */}
       <body className="page-template page-template-elementor_header_footer page page-id-6680 wp-embed-responsive theme-medilink woocommerce-no-js rtsb-shopbuilder-plugin rtsb_theme_medilink woocommerce non-stick header-style-1 non-trheader carton no-sidebar product-grid-view elementor-default elementor-template-full-width elementor-kit-3000 elementor-page elementor-page-6680">
         <Header />
         <div style={{ overflow: "hidden", backgroundColor: "#f1f7fa" }}>

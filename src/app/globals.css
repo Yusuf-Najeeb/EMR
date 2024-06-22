@@ -13,6 +13,7 @@ body {
   color: #111 !important;
   overflow: scroll;
   overflow-x: hidden;
+  font-family: "Open sans", "Serif" !important;
 }
 
 ::-webkit-scrollbar {
@@ -36,6 +37,22 @@ button:hover {
 }
 li:hover {
   background-color: "#23A455";
+}
+
+.site-header .main-navigation ul.menu > li > a:hover {
+  color: #4ba856 !important;
+}
+a:hover,
+a:focus,
+a:active {
+  color: #4ba856 !important;
+}
+a:hover {
+  color: #4ba856;
+  text-decoration: underline;
+}
+.site-header .main-navigation > nav > ul > li > a:after {
+  background: #4ba856 !important;
 }
 
 #datePicker,
@@ -80,9 +97,8 @@ li:hover {
   li.menu-item-has-children:after {
   content: ">" !important;
   font-weight: bold;
-  font-size: 4rem;
   position: absolute;
-  right: 26px;
+  right: 24px;
   top: 8px;
 }
 

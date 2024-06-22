@@ -41,13 +41,6 @@ const Header = () => {
               </div>
               <div className="col-sm-8 col-xs-12">
                 <div className="header-icon-area header-action-items-layout2">
-                  {/* <div className="search-box-area">
-                    <div className="search-box">
-                      <a href="#header-search" className="search-button">
-                        <i className="flaticon-search"></i>
-                      </a>
-                    </div>
-                  </div> */}
                   <div className="clear"></div>
                 </div>
                 <div id="site-navigation" className="main-navigation">
@@ -306,19 +299,6 @@ const Header = () => {
                   </nav>
                 </div>
               </div>
-              {/* <div className="col-lg-2 col-md-2 d-none d-lg-block">
-                <ul className="header-action-items">
-                  <li>
-                    <a
-                      href="#"
-                      title="Appointment"
-                      className="btn-fill color-yellow btn-header"
-                    >
-                      Appointment
-                    </a>
-                  </li>
-                </ul>
-              </div> */}
             </div>
           </div>
         </div>
