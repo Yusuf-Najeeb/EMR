@@ -1,13 +1,11 @@
 import React from "react";
-import { CiLocationOn } from "react-icons/ci";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaPhone } from "react-icons/fa6";
+import { FaEnvelope } from "react-icons/fa";
+
 import { CiMail } from "react-icons/ci";
-import { MdOutlinePhoneInTalk } from "react-icons/md";
-import {
-  BsFacebook,
-  BsTwitterX,
-  BsLinkedin,
-  BsInstagram,
-} from "react-icons/bs";
+import { FaFacebookF } from "react-icons/fa6";
+import { BsTwitterX, BsLinkedin, BsInstagram } from "react-icons/bs";
 
 const Footer = () => {
   return (
@@ -22,7 +20,7 @@ const Footer = () => {
                   <li>
                     <a id="link" target="_blank" href="#">
                       {/* <i className="fa fa-facebook-f"></i> */}
-                      <BsFacebook />
+                      <FaFacebookF />
                     </a>
                   </li>
                   <li>
@@ -271,9 +269,6 @@ const Footer = () => {
                 <div className="footer-header">
                   <h3 className="widgettitle ">Contact Us</h3>
                 </div>
-                <div className="footer-about">
-                  <p className="rtin-des"></p>
-                </div>
                 <div className="footer-contact-info">
                   <ul>
                     <li className="no-image">
@@ -281,7 +276,7 @@ const Footer = () => {
                         className="fas fa-map-marker-alt"
                         aria-hidden="true"
                       ></i> */}
-                      <CiLocationOn className="icon" />
+                      <FaLocationDot className="icon" size={35} />
                       <div className="fax-text">
                         Plot 1847, B07 Cadastral Zone, Behind ABC Cargo,
                         Katampe, Abuja, Nigeria.
@@ -289,25 +284,22 @@ const Footer = () => {
                     </li>
                     <li className="no-image">
                       {/* <i className="fas fa-phone" aria-hidden="true"></i> */}
-                      <MdOutlinePhoneInTalk className="icon" />
-                      <a href="tel:07000013332, 08184227707">
-                        07000013332, 08184227707{" "}
-                      </a>
+                      <FaPhone className="icon" size={20} />
+
+                      <div className="fax-text">
+                        {/* <a href="tel:07000013332, 08184227707"> */}
+                        07000013332, 08184227707
+                        {/* </a> */}
+                      </div>
                     </li>
                     <li className="no-image">
                       {/* <i className="far fa-envelope" aria-hidden="true"></i> */}
-                      <CiMail className="icon" />
-                      <div className="fax-text">
-                        <a href="mailto:info@dedahospital.com">
-                          info@dedahospital.com
-                        </a>
-                      </div>
+                      <FaEnvelope className="icon" size={20} />
+                      {/* <a href="mailto:info@dedahospital.com"> */}
+                      <div className="fax-text">info@dedahospital.com</div>
+                      {/* </a> */}
                     </li>
                   </ul>
-                </div>
-
-                <div className="footer-social">
-                  <ul></ul>
                 </div>
               </div>
             </div>

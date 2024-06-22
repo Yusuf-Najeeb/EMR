@@ -78,10 +78,8 @@ li:hover {
   li
   ul.sub-menu
   li.menu-item-has-children:after {
-  color: #4ba856b8 !important;
-  content: "▶" !important;
-  font-family: FontAwesome;
-  font-weight: bolder;
+  content: ">" !important;
+  font-weight: bold;
   font-size: 4rem;
   position: absolute;
   right: 26px;
@@ -116,11 +114,14 @@ div.footer-header::after {
 }
 .no-image {
   padding-left: 0 !important;
+  display: flex !important;
+  gap: 0.5rem !important;
+  font-size: 1rem !important;
 }
+
 .icon {
   display: block;
-  color: #4ba856;
-  font-size: 2rem;
+  font-size: 1rem;
   margin-bottom: 0.75rem;
 }
 
